@@ -1,16 +1,8 @@
 {
   "name": "nodejs-express-mongoose-demo",
   "description": "A demo app illustrating the usage of express, mongoose, passportjs, pug and other modules in nodejs",
-  "keywords": [
-    "express",
-    "mongoose",
-    "mongodb",
-    "passport",
-    "demo"
-  ],
   "version": "4.0.0",
   "private": false,
-  "author": "Madhusudhan Srinivasa <madhums8@gmail.com> (http://madhums.github.com)",
   "repository": {
     "type": "git",
     "url": "https://github.com/madhums/node-express-mongoose-demo.git"
@@ -21,7 +13,7 @@
   },
   "scripts": {
     "start": "cross-env NODE_ENV=development nodemon server.js",
-    "debug": "cross-env NODE_ENV=development nodemon --debug server.js",
+    "debug": "cross-env NODE_ENV=development nodemon --inspect-brk server.js",
     "test": "cross-env NODE_ENV=test babel-tape-runner test/test-*.js",
     "pretest": "eslint .",
     "prod": "pm2-runtime start ecosystem.config.js --env production"
