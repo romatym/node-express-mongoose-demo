@@ -22,7 +22,7 @@ const setTags = tags => tags.split(',').slice(0, 10); // max tags
 
 const ArticleSchema = new Schema({
   title: { type: String, default: '', trim: true, maxlength: 400 },
-  body: { type: String, default: '', trim: true, maxlength: 1000 },
+  body: { type: String, default: '', trim: true, maxlength: 5000 },
   user: { type: Schema.ObjectId, ref: 'User' },
   comments: [
     {
@@ -163,7 +163,7 @@ ArticleSchema.statics = {
   list: function(options) {
     const criteria = options.criteria || {};
     const page = options.page || 0;
-    const limit = options.limit || 30;
+    const limit = options.limit || 10;
     return this.find(criteria)
       .populate('user', 'name username')
       .sort({ createdAt: -1 })

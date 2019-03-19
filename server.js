@@ -23,7 +23,7 @@ const models = join(__dirname, 'app/models');
 const port = process.env.PORT || 3000;
 const app = express();
 
-console.log('111111111');
+console.log('111111111 server.js');
 
 /**
  * Expose
