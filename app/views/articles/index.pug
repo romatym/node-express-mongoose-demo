@@ -1,27 +1,324 @@
-extends ../layouts/default
+doctype html
+html(lang='en')
+  head
+    meta(http-equiv='content-type', content='text/html; charset=UTF-8')
+    meta(charset='utf-8')
+    title Facebook Theme Demo
+    meta(name='viewport', content='width=device-width, initial-scale=1, maximum-scale=1')
+    link(href='https://usebootstrap.com/preview/facebook/assets/css/bootstrap.css', rel='stylesheet')
+    link(href='https://usebootstrap.com/preview/facebook/assets/css/facebook.css', rel='stylesheet')
+    //- link(href='./assets/css/bootstrap.css', rel='stylesheet')    
+    //- link(href='./assets/css/facebook.css', rel='stylesheet')
 
-block main
-  h1= title
+  body
+    .wrapper
+      .box
+        .row.row-offcanvas.row-offcanvas-left
+          // sidebar
+          #sidebar.column.col-sm-2.col-xs-1.sidebar-offcanvas
+            ul.nav
+              li
+                a.visible-xs.text-center(href='#', data-toggle='offcanvas')
+                  i.glyphicon.glyphicon-chevron-right
+            ul#lg-menu.nav.hidden-xs
+              li.active
+                a(href='#featured')
+                  i.glyphicon.glyphicon-list-alt
+                  |  Featured
+              li
+                a(href='#stories')
+                  i.glyphicon.glyphicon-list
+                  |  Stories
+              li
+                a(href='#')
+                  i.glyphicon.glyphicon-paperclip
+                  |  Saved
+              li
+                a(href='#')
+                  i.glyphicon.glyphicon-refresh
+                  |  Refresh
+            ul#sidebar-footer.list-unstyled.hidden-xs
+              li
+                a(href='http://usebootstrap.com/theme/facebook')
+                  h3 Bootstrap
+                  i.glyphicon.glyphicon-heart-empty
+                  |  Bootply
+            // tiny only nav
+            ul#xs-menu.nav.visible-xs
+              li
+                a.text-center(href='#featured')
+                  i.glyphicon.glyphicon-list-alt
+              li
+                a.text-center(href='#stories')
+                  i.glyphicon.glyphicon-list
+              li
+                a.text-center(href='#')
+                  i.glyphicon.glyphicon-paperclip
+              li
+                a.text-center(href='#')
+                  i.glyphicon.glyphicon-refresh
+          // /sidebar
+          // main right col
+          #main.column.col-sm-10.col-xs-11
+            // top nav
+            .navbar.navbar-blue.navbar-static-top
+              .navbar-header
+                button.navbar-toggle(type='button', data-toggle='collapse', data-target='.navbar-collapse')
+                  span.sr-only Toggle
+                  span.icon-bar
+                  span.icon-bar
+                  span.icon-bar
+                a.navbar-brand.logo(href='http://usebootstrap.com/theme/facebook') b
+              nav.collapse.navbar-collapse(role='navigation')
+                form.navbar-form.navbar-left
+                  .input-group.input-group-sm(style='max-width:360px;')
+                    input#srch-term.form-control(placeholder='Search', name='srch-term', type='text')
+                    .input-group-btn
+                      button.btn.btn-default(type='submit')
+                        i.glyphicon.glyphicon-search
+                ul.nav.navbar-nav
+                  li
+                    a(href='#')
+                      i.glyphicon.glyphicon-home
+                      |  Home
+                  li
+                    a(href='/articles/new', role='button', data-toggle='modal')
+                      i.glyphicon.glyphicon-plus
+                      |  Post
+                  li
+                    a(href='#')
+                      span.badge badge
+                ul.nav.navbar-nav.navbar-right
+                  li.dropdown
+                    a.dropdown-toggle(href='#', data-toggle='dropdown')
+                      i.glyphicon.glyphicon-user
+                    ul.dropdown-menu
+                      li
+                        a(href='') More
+                      li
+                        a(href='') More
+                      li
+                        a(href='') More
+                      li
+                        a(href='') More
+                      li
+                        a(href='') More
+            // /top nav
+            .padding
+              .full.col-sm-9
+                // content
+                .row
+                  // main col left
+                  .col-sm-5
+                    .panel.panel-default
+                      .panel-thumbnail
+                        img.img-responsive(src='https://usebootstrap.com/preview/facebook/assets/img/bg_5.jpg')
+                      .panel-body
+                        p.lead Urbanization
+                        p 45 Followers, 13 Posts
+                        p
+                          img(src='https://usebootstrap.com/preview/facebook/assets/img/bg_5.jpg', height='28px', width='28px')
+                    .panel.panel-default
+                      .panel-heading
+                        a.pull-right(href='#') View all
+                        h4 Bootstrap Examples
+                      .panel-body
+                        .list-group
+                          a.list-group-item(href='http://usebootstrap.com/theme/facebook/assets/img/photo.jpg') Modal / Dialog
+                          a.list-group-item(href='http://usebootstrap.com/theme/facebook/assets/img/photo.png') Datetime Examples
+                          a.list-group-item(href='http://usebootstrap.com/theme/facebook/assets/img/photo_002.jpg') Data Grids
+                    .well
+                      form.form-horizontal(role='form')
+                        h4 What's New
+                        .form-group(style='padding:14px;')
+                          textarea.form-control(placeholder='Update your status')
+                        button.btn.btn-primary.pull-right(type='button') Post
+                        ul.list-inline
+                          li
+                            a(href='')
+                              i.glyphicon.glyphicon-upload
+                          li
+                            a(href='')
+                              i.glyphicon.glyphicon-camera
+                          li
+                            a(href='')
+                              i.glyphicon.glyphicon-map-marker
+                    .panel.panel-default
+                      .panel-heading
+                        a.pull-right(href='#') View all
+                        h4 More Templates
+                      .panel-body
+                        img.img-circle.pull-right(src='https://usebootstrap.com/preview/facebook/assets/img/150x150.gif')
+                        a(href='#') Free @Bootply
+                        .clearfix
+                        | 											There a load of new free Bootstrap 3
+                        | 		 ready templates at Bootply. All of these templates are free and don't 
+                        | 		require extensive customization to the Bootstrap baseline.
+                        hr
+                        ul.list-unstyled
+                          li
+                            a(href='http://usebootstrap.com/theme/facebook') Dashboard
+                          li
+                            a(href='http://usebootstrap.com/theme/facebook') Darkside
+                          li
+                            a(href='http://usebootstrap.com/theme/facebook') Greenfield
+                    .panel.panel-default
+                      .panel-heading
+                        h4 What Is Bootstrap?
+                      .panel-body
+                        | Bootstrap is front end frameworkto
+                        | build custom web applications that are fast, responsive & intuitive.
+                        | It consist of CSS and HTML for typography, forms, buttons, tables,
+                        | grids, and navigation along with custom-built jQuery plug-ins and
+                        | support for responsive layouts. With dozens of reusable components for
+                        | navigation, pagination, labels, alerts etc..
+                  // main col right
+                  .col-sm-7
+                    //- .well
+                    //-   form.form
+                    //-     h4 Sign-up
+                    //-     .input-group.text-center
+                    //-       input.form-control.input-lg(placeholder='Enter your email address', type='text')
+                    //-       span.input-group-btn
+                    //-         button.btn.btn-lg.btn-primary(type='button') OK
 
-block content
-  - if (articles.length)
-    each article, index in articles
-      div(class=`py-4 ${index && 'border-top'}`)
-        include article
+                    block content
+                      - if (articles.length)
+                        each article, index in articles
+                          //- .panel.panel-default
+                          include article
+                          //- h4 test1
 
-    - if (pages > 1)
-      ul.pagination
-        - var arr = paginate({ currentPage: page, totalPages: pages })
-        each item in arr
-          li.page-item(class=item.isActive && item.type === 'PAGE' && 'active')
-            a.page-link(href=`?page=${item.value}`)
-              case item.type
-                when 'FIRST_PAGE_LINK': | First
-                when 'PREVIOUS_PAGE_LINK': | Previous
-                when 'PAGE': =item.value
-                when 'ELLIPSIS': | ...
-                when 'NEXT_PAGE_LINK': | Next
-                when 'LAST_PAGE_LINK': | Last
-  - else
-    h4.text-muted No articles.&nbsp;
-      a(href="/articles/new") create one
+                        - if (pages > 1)
+                          ul.pagination
+                            - var arr = paginate({ currentPage: page, totalPages: pages })
+                            each item in arr
+                              li.page-item(class=item.isActive && item.type === 'PAGE' && 'active')
+                                a.page-link(href=`?page=${item.value}`)
+                                  case item.type
+                                    when 'FIRST_PAGE_LINK': | First
+                                    when 'PREVIOUS_PAGE_LINK': | Previous
+                                    when 'PAGE': =item.value
+                                    when 'ELLIPSIS': | ...
+                                    when 'NEXT_PAGE_LINK': | Next
+                                    when 'LAST_PAGE_LINK': | Last
+                      - else
+                        h4.text-muted No articles.&nbsp;
+                          a(href="/articles/new") create one
+
+                    
+                    //- .panel.panel-default
+                    //-   .panel-heading
+                    //-     a.pull-right(href='#') View all
+                    //-     h4 Stackoverflow
+                    //-   .panel-body
+                    //-     img.img-circle.pull-right(src='https://usebootstrap.com/preview/facebook/assets/img/150x150.gif')
+                    //-     a(href='#') Keyword: Bootstrap
+                    //-     .clearfix
+                    //-     hr
+                    //-     p
+                    //-       | If you're looking for help with Bootstrap code, the 
+                    //-       code twitter-bootstrap
+                    //-       |  tag at 
+                    //-       a(href='http://stackoverflow.com/questions/tagged/twitter-bootstrap') Stackoverflow
+                    //-       |  is a good place to find answers.
+                    //-     hr
+                    //-     form
+                    //-       .input-group
+                    //-         .input-group-btn
+                    //-           button.btn.btn-default +1
+                    //-           button.btn.btn-default
+                    //-             i.glyphicon.glyphicon-share
+                    //-         input.form-control(placeholder='Add a comment..', type='text')
+                    //- .panel.panel-default
+                    //-   .panel-heading
+                    //-     a.pull-right(href='#') View all
+                    //-     h4 Bootply Editor & Code Library
+                    //-   .panel-body
+                    //-     p
+                    //-       img.img-circle.pull-right(src='https://usebootstrap.com/preview/facebook/assets/img/150x150.gif')
+                    //-       a(href='#') The Bootstrap Playground
+                    //-     .clearfix
+                    //-     hr
+                    //-     | 											Design, build, test, and prototype
+                    //-     | 		using Bootstrap in real-time from your Web browser. Bootply combines the
+                    //-     | 		 power of hand-coded HTML, CSS and JavaScript with the benefits of
+                    //-     | 		responsive design using Bootstrap. Find and showcase Bootstrap-ready
+                    //-     | 		snippets in the 100% free Bootply.com code repository.
+
+                    //- .panel.panel-default
+                    //-   .panel-heading
+                    //-     a.pull-right(href='#') View all
+                    //-     h4 Portlet Heading
+                    //-   .panel-body
+                    //-     ul.list-group
+                    //-       li.list-group-item Modals
+                    //-       li.list-group-item Sliders / Carousel
+                    //-       li.list-group-item Thumbnails
+                    //- .panel.panel-default
+                    //-   .panel-thumbnail
+                    //-     img.img-responsive(src='https://usebootstrap.com/preview/facebook/assets/img/bg_4.jpg')
+                    //-   .panel-body
+                    //-     p.lead Social Good
+                    //-     p 1,200 Followers, 83 Posts
+                    //-     p
+                    //-       img(src='https://usebootstrap.com/preview/facebook/assets/img/photo.jpg', height='28px', width='28px')
+                    //-       img(src='https://usebootstrap.com/preview/facebook/assets/img/photo.png', height='28px', width='28px')
+                    //-       img(src='https://usebootstrap.com/preview/facebook/assets/img/photo_002.jpg', height='28px', width='28px')
+                // /row
+                .row
+                  .col-sm-6
+                    a(href='#') Twitter
+                    small.text-muted |
+                    a(href='#') Facebook
+                    small.text-muted |
+                    a(href='#') Google+
+                #footer.row
+                  .col-sm-6
+                  .col-sm-6
+                    p
+                      a.pull-right(href='#') �Copyright 2013
+                hr
+                h4.text-center
+                  a(href='http://usebootstrap.com/theme/facebook', target='ext') Download this Template @Bootply
+                hr
+              // /col-9
+              // /padding
+              // /main
+              // post modal
+              #postModal.modal.fade(tabindex='-1', role='dialog', aria-hidden='true')
+                .modal-dialog
+                  .modal-content
+                    .modal-header
+                      button.close(type='button', data-dismiss='modal', aria-hidden='true') �
+                      | 					Update Status
+                    .modal-body
+                      form.form.center-block
+                        .form-group
+                          textarea.form-control.input-lg(autofocus='', placeholder='What do you want to share?')
+                    .modal-footer
+                      div
+                        button.btn.btn-primary.btn-sm(data-dismiss='modal', aria-hidden='true') Post
+                        ul.pull-left.list-inline
+                          li
+                            a(href='')
+                              i.glyphicon.glyphicon-upload
+                          li
+                            a(href='')
+                              i.glyphicon.glyphicon-camera
+                          li
+                            a(href='')
+                              i.glyphicon.glyphicon-map-marker
+              script(type='text/javascript', src='https://usebootstrap.com/preview/facebook/assets/js/jquery.js')
+              script(type='text/javascript', src='https://usebootstrap.com/preview/facebook/assets/js/bootstrap.js')
+              //- script(type='text/javascript').
+              //-   $(document).ready(function() {
+              //-   $('[data-toggle=offcanvas]').click(function() {
+              //-   $(this).toggleClass('visible-xs text-center');
+              //-   $(this).find('i').toggleClass('glyphicon-chevron-right glyphicon-chevron-left');
+              //-   $('.row-offcanvas').toggleClass('active');
+              //-   $('#lg-menu').toggleClass('hidden-xs').toggleClass('visible-xs');
+              //-   $('#xs-menu').toggleClass('visible-xs').toggleClass('hidden-xs');
+              //-   $('#btnShow').toggle();
+              //-   });
+              //-   });

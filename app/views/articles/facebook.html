@@ -258,7 +258,7 @@
 								  </div>
 								  <div class="col-sm-6">
 									<p>
-									<a href="#" class="pull-right">©Copyright 2013</a>
+									<a href="#" class="pull-right">ï¿½Copyright 2013</a>
 									</p>
 								  </div>
 								</div>
@@ -287,7 +287,7 @@
 		  <div class="modal-dialog">
 		  <div class="modal-content">
 			  <div class="modal-header">
-				  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">ï¿½</button>
 					Update Status
 			  </div>
 			  <div class="modal-body">
