@@ -1,29 +1,27 @@
 article.article
-  
-                    .panel.panel-default
-                      .panel-heading
-                        a.pull-right(href='#') View all
-                        h4 Stackoverflow
-                      .panel-body
-                        img.img-circle.pull-right(src='https://usebootstrap.com/preview/facebook/assets/img/150x150.gif')
-                        a(href='#') Keyword: Bootstrap
-                        .clearfix
-                        hr
-                        p
-                          | If you're looking for help with Bootstrap code, the 
-                          code twitter-bootstrap
-                          |  tag at 
-                          a(href='http://stackoverflow.com/questions/tagged/twitter-bootstrap') Stackoverflow
-                          |  is a good place to find answers.
-                        hr
-                        form
-                          .input-group
-                            .input-group-btn
-                              button.btn.btn-default +1
-                              button.btn.btn-default
-                                i.glyphicon.glyphicon-share
-                            input.form-control(placeholder='Add a comment..', type='text')
-  //-   a(href='/articles/'+article._id, title=article.title) #{article.title.slice(0, 140)}
+  h4=article.title
+  .panel.panel-default
+    .panel-heading
+      a.pull-right(href='#') View all
+      .panel-body
+        img.img-circle.pull-right(src='https://usebootstrap.com/preview/facebook/assets/img/150x150.gif')
+        a(href='/articles/'+article._id, title=article.title) #{article.title.slice(0, 140)})
+        .clearfix
+        hr
+        p= article.body.slice(0, 400)
+        code=article.title
+        //- |  tag at 
+        //- a(href='http://stackoverflow.com/questions/tagged/twitter-bootstrap')=article.tag
+        form
+          .input-group
+            .input-group-btn
+              button.btn.btn-default +1
+              button.btn.btn-default
+                i.glyphicon.glyphicon-share
+            input.form-control(placeholder='Add a comment..', type='text')
+
+  //- h3
+    //- a(href='/articles/'+article._id, title=article.title) #{article.title.slice(0, 140)}
   //- p= article.body.slice(0, 400)
 
   //- .meta

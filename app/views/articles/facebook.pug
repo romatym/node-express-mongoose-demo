@@ -5,10 +5,11 @@ html(lang='en')
     meta(charset='utf-8')
     title Facebook Theme Demo
     meta(name='viewport', content='width=device-width, initial-scale=1, maximum-scale=1')
-    link(href='assets/css/bootstrap.css', rel='stylesheet')
-    //if lt IE 9
-      script(src='//html5shim.googlecode.com/svn/trunk/html5.js')
-    link(href='assets/css/facebook.css', rel='stylesheet')
+    //-link(href='https://usebootstrap.com/preview/facebook/assets/css/bootstrap.css', rel='stylesheet')
+    //-link(href='https://usebootstrap.com/preview/facebook/assets/css/facebook.css', rel='stylesheet')
+    link(href='/css/bootstrap.css', rel='stylesheet')    
+    link(href='/css/facebook.css', rel='stylesheet')
+
   body
     .wrapper
       .box
@@ -81,7 +82,7 @@ html(lang='en')
                       i.glyphicon.glyphicon-home
                       |  Home
                   li
-                    a(href='#postModal', role='button', data-toggle='modal')
+                    a(href='/articles/new', role='button', data-toggle='modal')
                       i.glyphicon.glyphicon-plus
                       |  Post
                   li
@@ -111,21 +112,21 @@ html(lang='en')
                   .col-sm-5
                     .panel.panel-default
                       .panel-thumbnail
-                        img.img-responsive(src='assets/img/bg_5.jpg')
+                        img.img-responsive(src='https://usebootstrap.com/preview/facebook/assets/img/bg_5.jpg')
                       .panel-body
                         p.lead Urbanization
                         p 45 Followers, 13 Posts
                         p
-                          img(src='assets/img/uFp_tsTJboUY7kue5XAsGAs28.png', height='28px', width='28px')
+                          img(src='https://usebootstrap.com/preview/facebook/assets/img/bg_5.jpg', height='28px', width='28px')
                     .panel.panel-default
                       .panel-heading
                         a.pull-right(href='#') View all
                         h4 Bootstrap Examples
                       .panel-body
                         .list-group
-                          a.list-group-item(href='http://usebootstrap.com/theme/facebook') Modal / Dialog
-                          a.list-group-item(href='http://usebootstrap.com/theme/facebook') Datetime Examples
-                          a.list-group-item(href='http://usebootstrap.com/theme/facebook') Data Grids
+                          a.list-group-item(href='http://usebootstrap.com/theme/facebook/assets/img/photo.jpg') Modal / Dialog
+                          a.list-group-item(href='http://usebootstrap.com/theme/facebook/assets/img/photo.png') Datetime Examples
+                          a.list-group-item(href='http://usebootstrap.com/theme/facebook/assets/img/photo_002.jpg') Data Grids
                     .well
                       form.form-horizontal(role='form')
                         h4 What's New
@@ -147,7 +148,7 @@ html(lang='en')
                         a.pull-right(href='#') View all
                         h4 More Templates
                       .panel-body
-                        img.img-circle.pull-right(src='assets/img/150x150.gif')
+                        img.img-circle.pull-right(src='https://usebootstrap.com/preview/facebook/assets/img/150x150.gif')
                         a(href='#') Free @Bootply
                         .clearfix
                         | 											There a load of new free Bootstrap 3
@@ -173,70 +174,97 @@ html(lang='en')
                         | navigation, pagination, labels, alerts etc..
                   // main col right
                   .col-sm-7
-                    .well
-                      form.form
-                        h4 Sign-up
-                        .input-group.text-center
-                          input.form-control.input-lg(placeholder='Enter your email address', type='text')
-                          span.input-group-btn
-                            button.btn.btn-lg.btn-primary(type='button') OK
-                    .panel.panel-default
-                      .panel-heading
-                        a.pull-right(href='#') View all
-                        h4 Bootply Editor & Code Library
-                      .panel-body
-                        p
-                          img.img-circle.pull-right(src='assets/img/150x150.gif')
-                          a(href='#') The Bootstrap Playground
-                        .clearfix
-                        hr
-                        | 											Design, build, test, and prototype
-                        | 		using Bootstrap in real-time from your Web browser. Bootply combines the
-                        | 		 power of hand-coded HTML, CSS and JavaScript with the benefits of
-                        | 		responsive design using Bootstrap. Find and showcase Bootstrap-ready
-                        | 		snippets in the 100% free Bootply.com code repository.
-                    .panel.panel-default
-                      .panel-heading
-                        a.pull-right(href='#') View all
-                        h4 Stackoverflow
-                      .panel-body
-                        img.img-circle.pull-right(src='assets/img/150x150.gif')
-                        a(href='#') Keyword: Bootstrap
-                        .clearfix
-                        hr
-                        p
-                          | If you're looking for help with Bootstrap code, the 
-                          code twitter-bootstrap
-                          |  tag at 
-                          a(href='http://stackoverflow.com/questions/tagged/twitter-bootstrap') Stackoverflow
-                          |  is a good place to find answers.
-                        hr
-                        form
-                          .input-group
-                            .input-group-btn
-                              button.btn.btn-default +1
-                              button.btn.btn-default
-                                i.glyphicon.glyphicon-share
-                            input.form-control(placeholder='Add a comment..', type='text')
-                    .panel.panel-default
-                      .panel-heading
-                        a.pull-right(href='#') View all
-                        h4 Portlet Heading
-                      .panel-body
-                        ul.list-group
-                          li.list-group-item Modals
-                          li.list-group-item Sliders / Carousel
-                          li.list-group-item Thumbnails
-                    .panel.panel-default
-                      .panel-thumbnail
-                        img.img-responsive(src='assets/img/bg_4.jpg')
-                      .panel-body
-                        p.lead Social Good
-                        p 1,200 Followers, 83 Posts
-                        p
-                          img(src='assets/img/photo.jpg', height='28px', width='28px')
-                          img(src='assets/img/photo.png', height='28px', width='28px')
-                          img(src='assets/img/photo_002.jpg', height='28px', width='28px')
+                    //- .well
+                    //-   form.form
+                    //-     h4 Sign-up
+                    //-     .input-group.text-center
+                    //-       input.form-control.input-lg(placeholder='Enter your email address', type='text')
+                    //-       span.input-group-btn
+                    //-         button.btn.btn-lg.btn-primary(type='button') OK
+
+                    block content
+                      - if (articles.length)
+                        each article, index in articles
+                          //- .panel.panel-default
+                          include article
+                          //- h4 test1
+
+                        - if (pages > 1)
+                          ul.pagination
+                            - var arr = paginate({ currentPage: page, totalPages: pages })
+                            each item in arr
+                              li.page-item(class=item.isActive && item.type === 'PAGE' && 'active')
+                                a.page-link(href=`?page=${item.value}`)
+                                  case item.type
+                                    when 'FIRST_PAGE_LINK': | First
+                                    when 'PREVIOUS_PAGE_LINK': | Previous
+                                    when 'PAGE': =item.value
+                                    when 'ELLIPSIS': | ...
+                                    when 'NEXT_PAGE_LINK': | Next
+                                    when 'LAST_PAGE_LINK': | Last
+                      - else
+                        h4.text-muted No articles.&nbsp;
+                          a(href="/articles/new") create one
+
+                    
+                    //- .panel.panel-default
+                    //-   .panel-heading
+                    //-     a.pull-right(href='#') View all
+                    //-     h4 Stackoverflow
+                    //-   .panel-body
+                    //-     img.img-circle.pull-right(src='https://usebootstrap.com/preview/facebook/assets/img/150x150.gif')
+                    //-     a(href='#') Keyword: Bootstrap
+                    //-     .clearfix
+                    //-     hr
+                    //-     p
+                    //-       | If you're looking for help with Bootstrap code, the 
+                    //-       code twitter-bootstrap
+                    //-       |  tag at 
+                    //-       a(href='http://stackoverflow.com/questions/tagged/twitter-bootstrap') Stackoverflow
+                    //-       |  is a good place to find answers.
+                    //-     hr
+                    //-     form
+                    //-       .input-group
+                    //-         .input-group-btn
+                    //-           button.btn.btn-default +1
+                    //-           button.btn.btn-default
+                    //-             i.glyphicon.glyphicon-share
+                    //-         input.form-control(placeholder='Add a comment..', type='text')
+                    //- .panel.panel-default
+                    //-   .panel-heading
+                    //-     a.pull-right(href='#') View all
+                    //-     h4 Bootply Editor & Code Library
+                    //-   .panel-body
+                    //-     p
+                    //-       img.img-circle.pull-right(src='https://usebootstrap.com/preview/facebook/assets/img/150x150.gif')
+                    //-       a(href='#') The Bootstrap Playground
+                    //-     .clearfix
+                    //-     hr
+                    //-     | 											Design, build, test, and prototype
+                    //-     | 		using Bootstrap in real-time from your Web browser. Bootply combines the
+                    //-     | 		 power of hand-coded HTML, CSS and JavaScript with the benefits of
+                    //-     | 		responsive design using Bootstrap. Find and showcase Bootstrap-ready
+                    //-     | 		snippets in the 100% free Bootply.com code repository.
+
+                    //- .panel.panel-default
+                    //-   .panel-heading
+                    //-     a.pull-right(href='#') View all
+                    //-     h4 Portlet Heading
+                    //-   .panel-body
+                    //-     ul.list-group
+                    //-       li.list-group-item Modals
+                    //-       li.list-group-item Sliders / Carousel
+                    //-       li.list-group-item Thumbnails
+                    //- .panel.panel-default
+                    //-   .panel-thumbnail
+                    //-     img.img-responsive(src='https://usebootstrap.com/preview/facebook/assets/img/bg_4.jpg')
+                    //-   .panel-body
+                    //-     p.lead Social Good
+                    //-     p 1,200 Followers, 83 Posts
+                    //-     p
+                    //-       img(src='https://usebootstrap.com/preview/facebook/assets/img/photo.jpg', height='28px', width='28px')
+                    //-       img(src='https://usebootstrap.com/preview/facebook/assets/img/photo.png', height='28px', width='28px')
+                    //-       img(src='https://usebootstrap.com/preview/facebook/assets/img/photo_002.jpg', height='28px', width='28px')
                 // /row
                 .row
                   .col-sm-6
@@ -281,16 +309,16 @@ html(lang='en')
                           li
                             a(href='')
                               i.glyphicon.glyphicon-map-marker
-              script(type='text/javascript', src='assets/js/jquery.js')
-              script(type='text/javascript', src='assets/js/bootstrap.js')
-              script(type='text/javascript').
-                $(document).ready(function() {
-                $('[data-toggle=offcanvas]').click(function() {
-                $(this).toggleClass('visible-xs text-center');
-                $(this).find('i').toggleClass('glyphicon-chevron-right glyphicon-chevron-left');
-                $('.row-offcanvas').toggleClass('active');
-                $('#lg-menu').toggleClass('hidden-xs').toggleClass('visible-xs');
-                $('#xs-menu').toggleClass('visible-xs').toggleClass('hidden-xs');
-                $('#btnShow').toggle();
-                });
-                });
+              script(type='text/javascript', src='https://usebootstrap.com/preview/facebook/assets/js/jquery.js')
+              script(type='text/javascript', src='https://usebootstrap.com/preview/facebook/assets/js/bootstrap.js')
+              //- script(type='text/javascript').
+              //-   $(document).ready(function() {
+              //-   $('[data-toggle=offcanvas]').click(function() {
+              //-   $(this).toggleClass('visible-xs text-center');
+              //-   $(this).find('i').toggleClass('glyphicon-chevron-right glyphicon-chevron-left');
+              //-   $('.row-offcanvas').toggleClass('active');
+              //-   $('#lg-menu').toggleClass('hidden-xs').toggleClass('visible-xs');
+              //-   $('#xs-menu').toggleClass('visible-xs').toggleClass('hidden-xs');
+              //-   $('#btnShow').toggle();
+              //-   });
+              //-   });
