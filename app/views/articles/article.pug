@@ -2,10 +2,10 @@ article.article
   h4=article.title
   .panel.panel-default
     .panel-heading
-      a.pull-right(href='#') View all
+      a.pull-right(href='/articles/'+article._id) View all
       .panel-body
         img.img-circle.pull-right(src='https://usebootstrap.com/preview/facebook/assets/img/150x150.gif')
-        a(href='/articles/'+article._id, title=article.title) #{article.title.slice(0, 140)})
+        a(href='/articles/'+article._id, title=article.title) #{article.title.slice(0, 140)}
         .clearfix
         hr
         p= article.body.slice(0, 400)
