@@ -8,8 +8,7 @@ const mongoose = require('mongoose');
 const { wrap: async } = require('co');
 const only = require('only');
 const { respond, respondOrRedirect } = require('../utils');
-const Article = mongoose.model('Article');
-//const Template = mongoose.model('Template');
+const Template = mongoose.model('Template');
 const assign = Object.assign;
 
 /**
@@ -18,8 +17,8 @@ const assign = Object.assign;
 
 exports.load = async(function*(req, res, next, id) {
   try {
-    req.article = yield Article.load(id);
-    if (!req.article) return next(new Error('Article not found'));
+    req.template = yield Template.load(id);
+    if (!req.template) return next(new Error('Template not found'));
   } catch (err) {
     return next(err);
   }
@@ -32,7 +31,7 @@ exports.load = async(function*(req, res, next, id) {
 
 exports.index = async(function*(req, res) {
 
-  console.log('3333333333 articles');
+  console.log('3333333333 templates');
 
   const page = (req.query.page > 0 ? req.query.page : 1) - 1;
   const _id = req.query.item;
@@ -44,52 +43,52 @@ exports.index = async(function*(req, res) {
 
   if (_id) options.criteria = { _id };
 
-  const articles = yield Article.list(options);
-  const count = yield Article.count();
+  const templates = yield Template.list(options);
+  const count = yield Template.count();
 
-  console.log('4444444444 articles');
+  console.log('4444444444 templates');
 
-  respond(res, 'articles/index', {
-    title: 'Articles',
-    articles: articles,
+  respond(res, 'templates/index', {
+    title: 'Templates',
+    templates: templates,
     page: page + 1,
     pages: Math.ceil(count / limit)
   });
 });
 
 /**
- * New article
+ * New template
  */
 
 exports.new = function(req, res) {
-  res.render('articles/new', {
-    title: 'New Article',
-    article: new Article()
+  res.render('templates/new', {
+    title: 'New Template1',
+    template: new Template()
   });
 };
 
 /**
- * Create an article
+ * Create a templates
  * Upload an image
  */
 
 exports.create = async(function*(req, res) {
-  const article = new Article(only(req.body, 'title body tags'));
-  article.user = req.user;
+  const template = new Template(only(req.body, 'title body tags'));
+  template.user = req.user;
   try {
-    yield article.uploadAndSave(req.file);
-    respondOrRedirect({ req, res }, `/articles/${article._id}`, article, {
+    yield template.uploadAndSave(req.file);
+    respondOrRedirect({ req, res }, `/templates/${template._id}`, template, {
       type: 'success',
-      text: 'Successfully created article!'
+      text: 'Successfully created template!'
     });
   } catch (err) {
     respond(
       res,
-      'articles/new',
+      'templates/new',
       {
-        title: article.title || 'New Article',
+        title: template.title || 'New template',
         errors: [err.toString()],
-        article
+        template
       },
       422
     );
@@ -97,34 +96,34 @@ exports.create = async(function*(req, res) {
 });
 
 /**
- * Edit an article
+ * Edit a template
  */
 
 exports.edit = function(req, res) {
-  res.render('articles/edit', {
-    title: 'Edit ' + req.article.title,
-    article: req.article
+  res.render('templates/edit', {
+    title: 'Edit ' + req.template.title,
+    template: req.template
   });
 };
 
 /**
- * Update article
+ * Update template
  */
 
 exports.update = async(function*(req, res) {
-  const article = req.article;
-  assign(article, only(req.body, 'title body tags'));
+  const template = req.template;
+  assign(template, only(req.body, 'title body tags'));
   try {
-    yield article.uploadAndSave(req.file);
-    respondOrRedirect({ res }, `/articles/${article._id}`, article);
+    yield template.uploadAndSave(req.file);
+    respondOrRedirect({ res }, `/templates/${template._id}`, template);
   } catch (err) {
     respond(
       res,
-      'articles/edit',
+      'templates/edit',
       {
-        title: 'Edit ' + article.title,
+        title: 'Edit ' + template.title,
         errors: [err.toString()],
-        article
+        template
       },
       422
     );
@@ -136,21 +135,21 @@ exports.update = async(function*(req, res) {
  */
 
 exports.show = function(req, res) {
-  respond(res, 'articles/show', {
-    title: req.article.title,
-    article: req.article
+  respond(res, 'templates/show', {
+    title: req.template.title,
+    template: req.template
   });
 };
 
 /**
- * Delete an article
+ * Delete a template
  */
 
 exports.destroy = async(function*(req, res) {
-  yield req.article.remove();
+  yield req.template.remove();
   respondOrRedirect(
     { req, res },
-    '/articles',
+    '/templates',
     {},
     {
       type: 'info',

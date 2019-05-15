@@ -9,12 +9,14 @@ const articles = require('../app/controllers/articles');
 const comments = require('../app/controllers/comments');
 const tags = require('../app/controllers/tags');
 const auth = require('./middlewares/authorization');
+const templates = require('../app/controllers/templates');
 
 /**
  * Route middlewares
  */
 
 const articleAuth = [auth.requiresLogin, auth.article.hasAuthorization];
+const templateAuth = [auth.requiresLogin, auth.article.hasAuthorization];
 const commentAuth = [auth.requiresLogin, auth.comment.hasAuthorization];
 
 const fail = {
@@ -97,6 +99,16 @@ module.exports = function(app, passport) {
   app.put('/articles/:id', articleAuth, articles.update);
   app.delete('/articles/:id', articleAuth, articles.destroy);
 
+    // template routes
+    app.param('id', templates.load);
+    app.get('/templates', templates.index);
+    app.get('/templates/new', auth.requiresLogin, templates.new);
+    app.post('/templates', auth.requiresLogin, templates.create);
+    app.get('/templates/:id', templates.show);
+    app.get('/templates/:id/edit', templateAuth, templates.edit);
+    app.put('/templates/:id', templateAuth, templates.update);
+    app.delete('/templates/:id', templateAuth, templates.destroy);
+  
   // home route
   app.get('/', articles.index);
 
