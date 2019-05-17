@@ -1,13 +1,26 @@
-extends ../layouts/default
+//extends ../layouts/default
 
-block main
-  h1= title
+//block main
+  //h1= title
+
+
+
 
 block content
   - if (templates.length)
     each template, index in templates
       div(class=`py-4 ${index && 'border-top'}`)
-        include templatelist
+        //include template
+        .panel.panel-default
+          .panel-heading
+            a.pull-right(href='#') View all
+            h4= template.title
+            h4= template.body
+          .panel-body
+            ul.list-group
+              li.list-group-item Modals
+              li.list-group-item Sliders / Carousel
+              li.list-group-item Thumbnails        
 
     - if (pages > 1)
       ul.pagination
