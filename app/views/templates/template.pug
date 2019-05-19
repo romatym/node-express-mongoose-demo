@@ -21,18 +21,26 @@ block content
           input.form-control#title(type='text', name="title", value=template.title, placeholder='Enter the template name')
 
         .form-group
-          label(for='file') Image
-          input.form-control-file#file(type='file', name="image")
-
-        .form-group
           label(for='desc') Question
           textarea.form-control#desc(rows="5", name="body", placeholder='Enter the template question')=template.body
 
-        .form-group
-          label(for='tags') Tags
-          input.form-control#tags(type='text', name="tags", value=template.tags, placeholder='Enter the tags')
+        //- .form-group
+        //-   label(for='tags') Tags
+        //-   input.form-control#tags(type='text', name="tags", value=template.tags, placeholder='Enter the tags')
 
-        
+        .form-group.answers
+          label(for='tags') Answers
+          .input-group
+            .input-group-btn
+              button.btn.btn-default.plus +1
+              button.btn.btn-default
+                i.glyphicon.glyphicon-share
+            input.form-control(placeholder='Add an answer..' type='text')
+
+        .form-group
+          label(for='file') Image
+          input.form-control-file#file(type='file', name="image")
+
         button.btn.btn-primary(type='submit') Save
         | &nbsp;
         a.btn.btn-link(href='/templates', title="cancel") Cancel
