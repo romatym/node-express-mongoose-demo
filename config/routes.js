@@ -87,7 +87,7 @@ module.exports = function(app, passport) {
   app.delete('/articles/:id', articleAuth, articles.destroy);
 
   // templates routes
-  app.param('id', templates.load);
+  //app.param('id', templates.load);
   app.get('/templates', templates.index);
   app.get('/templates/new', auth.requiresLogin, templates.new);
   app.post('/templates', auth.requiresLogin, templates.create);
