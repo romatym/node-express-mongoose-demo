@@ -22,19 +22,21 @@ const setTags = tags => tags.split(',').slice(0, 10); // max tags
 
 const TemplateSchema = new Schema({
   title: { type: String, default: '', trim: true, maxlength: 400 },
-  body: { type: String, default: '', trim: true, maxlength: 500 },
-  //answer: { type: String, default: '', maxlength: 300 },
+  body: { type: String, default: '', trim: true, maxlength: 1000 },
   user: { type: Schema.ObjectId, ref: 'User' },
-  questions: [
+  comments: [
     {
-      question: { type: String, default: '', maxlength: 1000 },
-      answers: [
-        { 
-          answer: { type: String, default: '', maxlength: 300 }
-        }
-      ]
+      body: { type: String, default: '', maxlength: 1000 },
+      user: { type: Schema.ObjectId, ref: 'User' },
+      createdAt: { type: Date, default: Date.now }
     }
-  ]
+  ],
+  tags: { type: [], get: getTags, set: setTags },
+  image: {
+    cdnUri: String,
+    files: []
+  },
+  createdAt: { type: Date, default: Date.now }
 });
 
 /**
@@ -55,7 +57,7 @@ TemplateSchema.pre('remove', function(next) {
   // if there are files associated with the item, remove from the cloud too
   // imager.remove(files, function (err) {
   //   if (err) return next(err);
-  // }, 'article');
+  // }, 'Template');
 
   next();
 });
@@ -66,7 +68,7 @@ TemplateSchema.pre('remove', function(next) {
 
 TemplateSchema.methods = {
   /**
-   * Save article and upload image
+   * Save Template and upload image
    *
    * @param {Object} images
    * @api private
@@ -87,7 +89,7 @@ TemplateSchema.methods = {
         self.image = { cdnUri : cdnUri, files : files };
       }
       self.save(cb);
-    }, 'article');
+    }, 'Template');
     */
   },
 
@@ -95,22 +97,22 @@ TemplateSchema.methods = {
    * Add comment
    *
    * @param {User} user
-   * @param {Object} question
+   * @param {Object} comment
    * @api private
    */
 
-  addQuestion: function(user, question) {
-    this.questions.push({
-      question: question,
+  addComment: function(user, comment) {
+    this.comments.push({
+      body: comment.body,
       user: user._id
     });
 
     if (!this.user.email) this.user.email = 'email@product.com';
 
-    notify.question({
-      template: this,
+    notify.comment({
+      Template: this,
       currentUser: user,
-      question: question
+      comment: comment.body
     });
 
     return this.save();
@@ -123,11 +125,11 @@ TemplateSchema.methods = {
    * @api private
    */
 
-  removeComment: function(templateId) {
-    const index = this.comments.map(comment => comment.id).indexOf(templateId);
+  removeComment: function(commentId) {
+    const index = this.comments.map(comment => comment.id).indexOf(commentId);
 
-    if (~index) this.templates.splice(index, 1);
-    else throw new Error('Template not found');
+    if (~index) this.comments.splice(index, 1);
+    else throw new Error('Comment not found');
     return this.save();
   }
 };
@@ -138,7 +140,7 @@ TemplateSchema.methods = {
 
 TemplateSchema.statics = {
   /**
-   * Find article by id
+   * Find Template by id
    *
    * @param {ObjectId} id
    * @api private
@@ -147,7 +149,7 @@ TemplateSchema.statics = {
   load: function(_id) {
     return this.findOne({ _id })
       .populate('user', 'name email username')
-      .populate('templates.user')
+      .populate('comments.user')
       .exec();
   },
 
@@ -161,7 +163,7 @@ TemplateSchema.statics = {
   list: function(options) {
     const criteria = options.criteria || {};
     const page = options.page || 0;
-    const limit = options.limit || 10;
+    const limit = options.limit || 30;
     return this.find(criteria)
       .populate('user', 'name username')
       .sort({ createdAt: -1 })

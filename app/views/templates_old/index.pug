@@ -4,10 +4,10 @@ block main
   h1= title
 
 block content
-  - if (articles.length)
-    each article, index in articles
+  - if (templates.length)
+    each template, index in templates
       div(class=`py-4 ${index && 'border-top'}`)
-        include article
+        include templatelist
 
     - if (pages > 1)
       ul.pagination
@@ -23,5 +23,5 @@ block content
                 when 'NEXT_PAGE_LINK': | Next
                 when 'LAST_PAGE_LINK': | Last
   - else
-    h4.text-muted No articles.&nbsp;
-      a(href="/articles/new") create one
+    h4.text-muted No templates.&nbsp;
+      a(href="/templates/new") create one

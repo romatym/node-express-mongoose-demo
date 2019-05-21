@@ -7,7 +7,7 @@ block content
   - if (templates.length)
     each template, index in templates
       div(class=`py-4 ${index && 'border-top'}`)
-        include templatelist
+        include template
 
     - if (pages > 1)
       ul.pagination

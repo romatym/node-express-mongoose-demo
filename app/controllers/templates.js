@@ -7,7 +7,6 @@
 const mongoose = require('mongoose');
 const { wrap: async } = require('co');
 const only = require('only');
-const { respond, respondOrRedirect } = require('../utils');
 const Template = mongoose.model('Template');
 const assign = Object.assign;
 
@@ -30,9 +29,6 @@ exports.load = async(function*(req, res, next, id) {
  */
 
 exports.index = async(function*(req, res) {
-
-  console.log('3333333333 templates');
-
   const page = (req.query.page > 0 ? req.query.page : 1) - 1;
   const _id = req.query.item;
   const limit = 15;
@@ -44,11 +40,9 @@ exports.index = async(function*(req, res) {
   if (_id) options.criteria = { _id };
 
   const templates = yield Template.list(options);
-  const count = yield Template.count();
+  const count = yield Template.countDocuments();
 
-  console.log('4444444444 templates');
-
-  respond(res, 'templates/index', {
+  res.render('templates/index', {
     title: 'Templates',
     templates: templates,
     page: page + 1,
@@ -62,14 +56,13 @@ exports.index = async(function*(req, res) {
 
 exports.new = function(req, res) {
   res.render('templates/new', {
-    title: 'New Template1',
+    title: 'New Template',
     template: new Template()
   });
 };
 
 /**
- * Create a templates
- * Upload an image
+ * Create an template
  */
 
 exports.create = async(function*(req, res) {
@@ -77,26 +70,19 @@ exports.create = async(function*(req, res) {
   template.user = req.user;
   try {
     yield template.uploadAndSave(req.file);
-    respondOrRedirect({ req, res }, `/templates/${template._id}`, template, {
-      type: 'success',
-      text: 'Successfully created template!'
-    });
+    req.flash('success', 'Successfully created template!');
+    res.redirect(`/templates/${template._id}`);
   } catch (err) {
-    respond(
-      res,
-      'templates/new',
-      {
-        title: template.title || 'New template',
-        errors: [err.toString()],
-        template
-      },
-      422
-    );
+    res.status(422).render('templates/new', {
+      title: template.title || 'New Template',
+      errors: [err.toString()],
+      template
+    });
   }
 });
 
 /**
- * Edit a template
+ * Edit an template
  */
 
 exports.edit = function(req, res) {
@@ -115,18 +101,13 @@ exports.update = async(function*(req, res) {
   assign(template, only(req.body, 'title body tags'));
   try {
     yield template.uploadAndSave(req.file);
-    respondOrRedirect({ res }, `/templates/${template._id}`, template);
+    res.redirect(`/templates/${template._id}`);
   } catch (err) {
-    respond(
-      res,
-      'templates/edit',
-      {
-        title: 'Edit ' + template.title,
-        errors: [err.toString()],
-        template
-      },
-      422
-    );
+    res.status(422).render('templates/edit', {
+      title: 'Edit ' + template.title,
+      errors: [err.toString()],
+      template
+    });
   }
 });
 
@@ -135,25 +116,18 @@ exports.update = async(function*(req, res) {
  */
 
 exports.show = function(req, res) {
-  respond(res, 'templates/show', {
+  res.render('templates/show', {
     title: req.template.title,
     template: req.template
   });
 };
 
 /**
- * Delete a template
+ * Delete an template
  */
 
 exports.destroy = async(function*(req, res) {
   yield req.template.remove();
-  respondOrRedirect(
-    { req, res },
-    '/templates',
-    {},
-    {
-      type: 'info',
-      text: 'Deleted successfully'
-    }
-  );
+  req.flash('info', 'Deleted successfully');
+  res.redirect('/templates');
 });

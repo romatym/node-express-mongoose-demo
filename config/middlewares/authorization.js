@@ -38,6 +38,20 @@ exports.article = {
   }
 };
 
+/*
+ *  Template authorization routing middleware
+ */
+
+exports.template = {
+  hasAuthorization: function(req, res, next) {
+    if (req.template.user.id != req.user.id) {
+      req.flash('info', 'You are not authorized');
+      return res.redirect('/templates/' + req.template.id);
+    }
+    next();
+  }
+};
+
 /**
  * Comment authorization routing middleware
  */

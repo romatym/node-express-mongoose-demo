@@ -1,0 +1,17 @@
+extends ../layouts/default
+
+block main
+  h1= title
+
+block content
+  - if (templates.length)
+    each template, index in templates
+      div(class=`py-4 ${index && 'border-top'}`)
+        include template
+
+    - if (pages > 1)
+      ul.pagination
+        != createPagination(pages, page, 'page-item', 'page-link')
+  - else
+    h4.text-muted No templates.&nbsp;
+      a(href="/templates/new") create one

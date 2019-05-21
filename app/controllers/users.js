@@ -6,7 +6,6 @@
 
 const mongoose = require('mongoose');
 const { wrap: async } = require('co');
-const { respond } = require('../utils');
 const User = mongoose.model('User');
 
 /**
@@ -35,7 +34,7 @@ exports.create = async(function*(req, res) {
     yield user.save();
     req.logIn(user, err => {
       if (err) req.flash('info', 'Sorry! We are not able to log you in!');
-      return res.redirect('/');
+      res.redirect('/');
     });
   } catch (err) {
     const errors = Object.keys(err.errors).map(
@@ -54,14 +53,9 @@ exports.create = async(function*(req, res) {
  *  Show profile
  */
 
-
-
 exports.show = function(req, res) {
   const user = req.profile;
-  
-  console.log('2222222222 profile');
-
-  respond(res, 'users/show', {
+  res.render('users/show', {
     title: user.name,
     user: user
   });

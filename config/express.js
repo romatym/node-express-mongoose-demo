@@ -9,11 +9,11 @@ const session = require('express-session');
 const compression = require('compression');
 const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
-const cookieSession = require('cookie-session');
 const bodyParser = require('body-parser');
 const methodOverride = require('method-override');
 const csrf = require('csurf');
 const cors = require('cors');
+const helmet = require('helmet');
 const upload = require('multer')();
 
 const mongoStore = require('connect-mongo')(session);
@@ -21,6 +21,7 @@ const flash = require('connect-flash');
 const winston = require('winston');
 const helpers = require('view-helpers');
 const ultimatePagination = require('ultimate-pagination');
+const requireHttps = require('./middlewares/require-https');
 const config = require('./');
 const pkg = require('../package.json');
 
@@ -31,6 +32,9 @@ const env = process.env.NODE_ENV || 'development';
  */
 
 module.exports = function(app, passport) {
+  app.use(helmet());
+  app.use(requireHttps);
+
   // Compression middleware (should be placed before express.static)
   app.use(
     compression({
@@ -91,7 +95,6 @@ module.exports = function(app, passport) {
 
   // CookieParser should be above session
   app.use(cookieParser());
-  app.use(cookieSession({ secret: 'secret' }));
   app.use(
     session({
       resave: false,

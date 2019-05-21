@@ -1,5 +1,11 @@
 'use strict';
 
+/*
+ * nodejs-express-mongoose-demo
+ * Copyright(c) 2013 Madhusudhan Srinivasa <madhums8@gmail.com>
+ * MIT Licensed
+ */
+
 /**
  * Module dependencies
  */
@@ -16,8 +22,6 @@ const config = require('./config');
 const models = join(__dirname, 'app/models');
 const port = process.env.PORT || 3000;
 const app = express();
-
-console.log('111111111 server.js');
 
 /**
  * Expose

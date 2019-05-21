@@ -6,17 +6,17 @@
 
 const users = require('../app/controllers/users');
 const articles = require('../app/controllers/articles');
+const templates = require('../app/controllers/templates');
 const comments = require('../app/controllers/comments');
 const tags = require('../app/controllers/tags');
 const auth = require('./middlewares/authorization');
-const templates = require('../app/controllers/templates');
 
 /**
  * Route middlewares
  */
 
 const articleAuth = [auth.requiresLogin, auth.article.hasAuthorization];
-const templateAuth = [auth.requiresLogin, auth.article.hasAuthorization];
+const templateAuth = [auth.requiresLogin, auth.template.hasAuthorization];
 const commentAuth = [auth.requiresLogin, auth.comment.hasAuthorization];
 
 const fail = {
@@ -44,48 +44,35 @@ module.exports = function(app, passport) {
     users.session
   );
   app.get('/users/:userId', users.show);
-  app.get(
-    '/auth/facebook',
-    pauth('facebook', {
-      scope: ['email', 'user_about_me'],
-      failureRedirect: '/login'
-    }),
-    users.signin
-  );
-  app.get(
-    '/auth/facebook/callback',
-    pauth('facebook', fail),
-    users.authCallback
-  );
-  app.get('/auth/github', pauth('github', fail), users.signin);
-  app.get('/auth/github/callback', pauth('github', fail), users.authCallback);
-  app.get('/auth/twitter', pauth('twitter', fail), users.signin);
-  app.get('/auth/twitter/callback', pauth('twitter', fail), users.authCallback);
-  app.get(
-    '/auth/google',
-    pauth('google', {
-      failureRedirect: '/login',
-      scope: [
-        'https://www.googleapis.com/auth/userinfo.profile',
-        'https://www.googleapis.com/auth/userinfo.email'
-      ]
-    }),
-    users.signin
-  );
-  app.get('/auth/google/callback', pauth('google', fail), users.authCallback);
-  app.get(
-    '/auth/linkedin',
-    pauth('linkedin', {
-      failureRedirect: '/login',
-      scope: ['r_emailaddress']
-    }),
-    users.signin
-  );
-  app.get(
-    '/auth/linkedin/callback',
-    pauth('linkedin', fail),
-    users.authCallback
-  );
+  // app.get('/auth/github', pauth('github', fail), users.signin);
+  // app.get('/auth/github/callback', pauth('github', fail), users.authCallback);
+  // app.get('/auth/twitter', pauth('twitter', fail), users.signin);
+  // app.get('/auth/twitter/callback', pauth('twitter', fail), users.authCallback);
+  // app.get(
+  //   '/auth/google',
+  //   pauth('google', {
+  //     failureRedirect: '/login',
+  //     scope: [
+  //       'https://www.googleapis.com/auth/userinfo.profile',
+  //       'https://www.googleapis.com/auth/userinfo.email'
+  //     ]
+  //   }),
+  //   users.signin
+  // );
+  // app.get('/auth/google/callback', pauth('google', fail), users.authCallback);
+  // app.get(
+  //   '/auth/linkedin',
+  //   pauth('linkedin', {
+  //     failureRedirect: '/login',
+  //     scope: ['r_emailaddress']
+  //   }),
+  //   users.signin
+  // );
+  // app.get(
+  //   '/auth/linkedin/callback',
+  //   pauth('linkedin', fail),
+  //   users.authCallback
+  // );
 
   app.param('userId', users.load);
 
@@ -99,16 +86,16 @@ module.exports = function(app, passport) {
   app.put('/articles/:id', articleAuth, articles.update);
   app.delete('/articles/:id', articleAuth, articles.destroy);
 
-    // template routes
-    app.param('id', templates.load);
-    app.get('/templates', templates.index);
-    app.get('/templates/new', auth.requiresLogin, templates.new);
-    app.post('/templates', auth.requiresLogin, templates.create);
-    app.get('/templates/:id', templates.show);
-    app.get('/templates/:id/edit', templateAuth, templates.edit);
-    app.put('/templates/:id', templateAuth, templates.update);
-    app.delete('/templates/:id', templateAuth, templates.destroy);
-  
+  // templates routes
+  app.param('id', templates.load);
+  app.get('/templates', templates.index);
+  app.get('/templates/new', auth.requiresLogin, templates.new);
+  app.post('/templates', auth.requiresLogin, templates.create);
+  app.get('/templates/:id', templates.show);
+  app.get('/templates/:id/edit', templateAuth, templates.edit);
+  app.put('/templates/:id', templateAuth, templates.update);
+  app.delete('/templates/:id', templateAuth, templates.destroy);
+
   // home route
   app.get('/', articles.index);
 
