@@ -12,13 +12,6 @@
             "webRoot": "${workspaceFolder}\\server.js"
         },
         {
-            "name": "Launch index.html",
-            "type": "chrome",
-            "request": "launch",
-            "file": "${workspaceFolder}/public/index.html"
-        },
-        
-        {
             "type": "node",
             "request": "attach",
             "name": "Attach by Process ID",

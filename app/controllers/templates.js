@@ -8,13 +8,14 @@ const mongoose = require('mongoose');
 const { wrap: async } = require('co');
 const only = require('only');
 const Template = mongoose.model('Template');
+//const Article = mongoose.model('Article');
 const assign = Object.assign;
 
 /**
  * Load
  */
 
-exports.load = async(function*(req, res, next, id) {
+exports.load = async(function* (req, res, next, id) {
   try {
     req.template = yield Template.load(id);
     if (!req.template) return next(new Error('Template not found'));
@@ -28,7 +29,7 @@ exports.load = async(function*(req, res, next, id) {
  * List
  */
 
-exports.index = async(function*(req, res) {
+exports.index = async(function* (req, res) {
   const page = (req.query.page > 0 ? req.query.page : 1) - 1;
   const _id = req.query.item;
   const limit = 15;
@@ -54,7 +55,7 @@ exports.index = async(function*(req, res) {
  * New template
  */
 
-exports.new = function(req, res) {
+exports.new = function (req, res) {
   res.render('templates/new', {
     title: 'New Template',
     template: new Template()
@@ -65,7 +66,7 @@ exports.new = function(req, res) {
  * Create an template
  */
 
-exports.create = async(function*(req, res) {
+exports.create = async(function* (req, res) {
   const template = new Template(only(req.body, 'title body tags'));
   template.user = req.user;
   try {
@@ -85,7 +86,7 @@ exports.create = async(function*(req, res) {
  * Edit an template
  */
 
-exports.edit = function(req, res) {
+exports.edit = function (req, res) {
   res.render('templates/edit', {
     title: 'Edit ' + req.template.title,
     template: req.template
@@ -96,7 +97,7 @@ exports.edit = function(req, res) {
  * Update template
  */
 
-exports.update = async(function*(req, res) {
+exports.update = async(function* (req, res) {
   const template = req.template;
   assign(template, only(req.body, 'title body tags'));
   try {
@@ -115,7 +116,7 @@ exports.update = async(function*(req, res) {
  * Show
  */
 
-exports.show = function(req, res) {
+exports.show = function (req, res) {
   res.render('templates/show', {
     title: req.template.title,
     template: req.template
@@ -126,7 +127,7 @@ exports.show = function(req, res) {
  * Delete an template
  */
 
-exports.destroy = async(function*(req, res) {
+exports.destroy = async(function* (req, res) {
   yield req.template.remove();
   req.flash('info', 'Deleted successfully');
   res.redirect('/templates');

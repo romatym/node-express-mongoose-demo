@@ -7,6 +7,7 @@
 const users = require('../app/controllers/users');
 const articles = require('../app/controllers/articles');
 const templates = require('../app/controllers/templates');
+const common = require('../app/controllers/common');
 const comments = require('../app/controllers/comments');
 const tags = require('../app/controllers/tags');
 const auth = require('./middlewares/authorization');
@@ -76,8 +77,11 @@ module.exports = function(app, passport) {
 
   app.param('userId', users.load);
 
-  // article routes
-  app.param('id', articles.load);
+
+  app.param('id', common.loadByID);
+
+  // articles routes
+  //app.param('id', articles.load);
   app.get('/articles', articles.index);
   app.get('/articles/new', auth.requiresLogin, articles.new);
   app.post('/articles', auth.requiresLogin, articles.create);
