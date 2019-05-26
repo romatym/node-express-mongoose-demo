@@ -24,6 +24,16 @@ const TemplateSchema = new Schema({
   title: { type: String, default: '', trim: true, maxlength: 400 },
   body: { type: String, default: '', trim: true, maxlength: 1000 },
   user: { type: Schema.ObjectId, ref: 'User' },
+  questions: [
+    {
+      questionText: { type: String, default: '', maxlength: 1000 },
+      answers: [
+        {
+          answerText: { type: String, default: '', maxlength: 500 }
+        }
+      ]
+    }
+  ],
   comments: [
     {
       body: { type: String, default: '', maxlength: 1000 },
@@ -31,6 +41,7 @@ const TemplateSchema = new Schema({
       createdAt: { type: Date, default: Date.now }
     }
   ],
+  
   tags: { type: [], get: getTags, set: setTags },
   image: {
     cdnUri: String,
