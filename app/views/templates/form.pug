@@ -22,9 +22,17 @@ block content
 
         .form-group
           label(for='desc') Body
-          textarea.form-control#desc(rows="3", name="questionText", placeholder='Enter the template description')=template.body
+          textarea.form-control#desc(rows="3", name="description", placeholder='Enter the template description')=template.body
 
-        input.form-group(type='button', value='+question')
+        .form-group
+          label(for='questions') Questions
+          .form-group.question
+            textarea.form-control.question(rows="2", name="questionText", placeholder='Enter the question')=template.body
+            .form-group.answers
+              label(for='answers') Answers
+              .input-group.answer
+              input.btn.btn-default.answer-plus(type='button', name='addAnswer', value='+answer')
+            input.btn.btn-default.question-plus(type='button', name='addQuestion', value='+question')
 
         .form-group
           label(for='tags') Tags
@@ -33,7 +41,7 @@ block content
         .form-group
           label(for='file') Image
           input.form-control-file#file(type='file', name="image")
-        
+
         button.btn.btn-primary(type='submit') Save
         | &nbsp;
         a.btn.btn-link(href='/templates', title="cancel") Cancel

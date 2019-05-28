@@ -13,14 +13,14 @@
   "author": "Madhusudhan Srinivasa <madhums8@gmail.com> (http://madhums.github.com)",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/madhums/node-express-mongoose-demo.git"
+    "url": ""
   },
   "license": "MIT",
   "engines": {
     "node": ">=10.11.0"
   },
   "scripts": {
-    "start": "cross-env NODE_ENV=development nodemon server.js",
+    "start": "cross-env NODE_ENV=development nodemon --inspect server.js",
     "debug": "cross-env NODE_ENV=development nodemon --debug server.js",
     "test": "cross-env NODE_ENV=test babel-tape-runner test/test-*.js",
     "pretest": "eslint .",
@@ -71,9 +71,9 @@
     "tape": "~4.10.1"
   },
   "bugs": {
-    "url": "https://github.com/madhums/node-express-mongoose-demo/issues"
+    "url": ""
   },
-  "homepage": "https://github.com/madhums/node-express-mongoose-demo#readme",
+  "homepage": "",
   "main": "ecosystem.config.js",
   "directories": {
     "test": "test"

@@ -33,8 +33,7 @@ function addNewAnswer(event) {
 
 function createComment(comment) {
 
-    return 
-    elem('div', {class: 'input-group'}, [
+    return elem('div', {class: 'input-group'}, [
         elem('div', {class: 'input-group-btn'}, [
             elem('button', {class: 'btn btn-default plus'}, '+1'), //.text.split('\n').join('<br>')),
             elem('button', {class: 'btn btn-default'}, [
