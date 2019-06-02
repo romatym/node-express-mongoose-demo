@@ -26,13 +26,14 @@ block content
 
         .form-group
           label(for='questions') Questions
-          .form-group.question
+          .form-group.question(style='border-style:solid;border-width:3px;border-color:red;padding-left: 15px;')
             textarea.form-control.question(rows="2", name="questionText", placeholder='Enter the question')=template.body
             .form-group.answers
               label(for='answers') Answers
-              .input-group.answer
+              .input-group.answer( style='padding-left: 15px;')
               input.btn.btn-default.answer-plus(type='button', name='addAnswer', value='+answer')
-            input.btn.btn-default.question-plus(type='button', name='addQuestion', value='+question')
+          br
+          input.btn.btn-default.question-plus(type='button', name='addQuestion', value='+question')
 
         .form-group
           label(for='tags') Tags

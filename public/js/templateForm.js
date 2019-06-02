@@ -10,6 +10,7 @@ function init() {
     //alert('222');
     const questionButton =  document.querySelector('.btn.btn-default.question-plus');
     if(questionButton) {
+        //alert('333');
         questionButton.addEventListener('click', addNewQuestion);
     }
     const answerButton =  document.querySelector('.btn.btn-default.answer-plus');
@@ -24,11 +25,16 @@ function addNewQuestion(event) {
     //alert('addNewQuestion');
     event.preventDefault();
 
-    var commentsContainer = document.querySelector('.form-control.question');
+    var commentsContainer = document.querySelector('.form-group.question');
     const comment = 'text';//event.target.value;
     var fragment = document.createDocumentFragment();
-    const commentElement = createAnswer(comment);
-    //commentElement.addEventListener('click', removeQuestion);
+    const commentElement = createQuestion(comment);
+    
+    const answerButton =  commentElement.querySelector('.btn.btn-default.answer-plus');
+    if(answerButton) {
+        answerButton.addEventListener('click', addNewAnswer);
+    }
+    commentElement.addEventListener('click', removeQuestion);
 
     fragment.appendChild(commentElement);
     commentsContainer.appendChild(fragment);
@@ -40,7 +46,7 @@ function addNewAnswer(event) {
     //alert('addNewAnswer');
     event.preventDefault();
 
-    var commentsContainer = document.querySelector('.input-group');
+    var commentsContainer = event.currentTarget.parentElement.querySelector('.input-group');
     const comment = 'text';//event.target.value;
     var fragment = document.createDocumentFragment();
     const commentElement = createAnswer(comment);
