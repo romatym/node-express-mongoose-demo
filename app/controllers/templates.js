@@ -99,7 +99,8 @@ exports.edit = function (req, res) {
 
 exports.update = async(function* (req, res) {
   const template = req.template;
-  assign(template, only(req.body, 'title body tags'));
+  const aaa = only(req.body, 'title body description questions tags');
+  assign(template, aaa);
   try {
     yield template.uploadAndSave(req.file);
     res.redirect(`/templates/${template._id}`);

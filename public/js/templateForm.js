@@ -75,7 +75,7 @@ function removeQuestion() {
     </div> */
 function createQuestion(comment) {
     return  elem('div', { class: 'form-group question' }, [
-                elem('textarea', { class: 'form-control question', rows: '2', name: 'questionText', placeholder: 'Enter the question' }),
+                elem('textarea', { class: 'form-control question', rows: '2', name: 'question', placeholder: 'Enter the question' }),
                 elem('div', { class: 'form-group answers' }, [
                     elem('label', { for: 'answers' }, 'Answers'),
                     elem('div', { class: 'input-group answer' }),
