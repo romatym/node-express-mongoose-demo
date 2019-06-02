@@ -75,7 +75,7 @@ function removeQuestion() {
     </div> */
 function createQuestion(comment) {
     return  elem('div', { class: 'form-group question' }, [
-                elem('textarea', { class: 'form-control question', rows: '2', name: 'question', placeholder: 'Enter the question' }),
+                elem('textarea', { class: 'form-control question', rows: '2', name: 'questions', placeholder: 'Enter the question' }),
                 elem('div', { class: 'form-group answers' }, [
                     elem('label', { for: 'answers' }, 'Answers'),
                     elem('div', { class: 'input-group answer' }),
@@ -102,7 +102,7 @@ function createAnswer(comment) {
         //         elem('i', {class: 'glyphicon glyphicon-share'})
         //     ])
         // ]),
-        elem('input', { class: 'form-control', placeholder: 'Add an answer..', type: 'text' }),
+        elem('input', { class: 'form-control', name: 'answer', placeholder: 'Add an answer..', type: 'text' }),
         elem('button', { class: 'btn btn-default plus' }, '-answer')
     ]);
 }

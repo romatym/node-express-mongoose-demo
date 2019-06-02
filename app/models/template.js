@@ -26,10 +26,10 @@ const TemplateSchema = new Schema({
   user: { type: Schema.ObjectId, ref: 'User' },
   questions: [
     {
-      questionText: { type: String, default: '', maxlength: 1000 },
+      question: { type: String, default: '', maxlength: 1000 },
       answers: [
         {
-          answerText: { type: String, default: '', maxlength: 500 }
+          answer: { type: String, default: '', maxlength: 500 }
         }
       ]
     }
