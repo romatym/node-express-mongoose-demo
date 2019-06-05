@@ -26,12 +26,18 @@ block content
 
         .form-group
           label(for='questions') Questions
-          .form-group.question(style='border-style:solid;border-width:3px;border-color:red;padding-left: 15px;')
-            textarea.form-control.question(rows="2", name="questions", placeholder='Enter the question')=template.body
-            .form-group.answers
-              label(for='answers') Answers
-              .input-group.answer( style='padding-left: 15px;')
-              input.btn.btn-default.answer-plus(type='button', name='addAnswer', value='+answer')
+          each questionItem, questionIndex in template.questions
+            .form-group.question(style='border-style:solid;border-width:3px;border-color:red;padding-left: 15px;')
+              textarea.form-control.question(rows="2", questionIndex=questionIndex questionId=questionItem.id name="question", placeholder='Enter the question')=questionItem.question
+              .form-group.answers
+                label(for='answers') Answers
+                each answerItem, answerIndex in questionItem.answers
+                  .input-group
+                    input.form-control(name='answer_'+questionIndex, placeholder='Add an answer..', type='text' value=answerItem.answer)
+                    button.btn.btn-default.plus -answer
+
+                .input-group.answer( style='padding-left: 15px;')
+                input.btn.btn-default.answer-plus(type='button', name='addAnswer', value='+answer')
           br
           input.btn.btn-default.question-plus(type='button', name='addQuestion', value='+question')
 

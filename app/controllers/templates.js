@@ -99,7 +99,9 @@ exports.edit = function (req, res) {
 
 exports.update = async(function* (req, res) {
   const template = req.template;
-  const aaa = only(req.body, 'title body questions tags');
+  //const aaa = only(req.body, 'title body questions tags');
+  const aaa = retProp(req.body, 'title body question answer tags');
+
   assign(template, aaa);
   try {
     yield template.uploadAndSave(req.file);
@@ -112,6 +114,35 @@ exports.update = async(function* (req, res) {
     });
   }
 });
+
+function retProp(obj, keys){
+  obj = obj || {};
+  if ('string' == typeof keys) keys = keys.split(/ +/);
+  var ret = keys.reduce(function(ret, key) {
+    if (null == obj[key]) return ret;
+    if(key === 'question') {
+      ret.questions = obj[key].map(currentValue => ({'question': currentValue}) );
+    } else {
+      ret[key] = obj[key];
+    }
+    return ret;
+  }, {});
+
+  if(ret['questions']) {
+    ret.questions.forEach((element, index) => {
+      if(obj['answer_'+index]) {
+        if( Array.isArray( obj['answer_'+index]) ) {
+          element.answers = obj['answer_'+index].map(currentValue => ({'answer': currentValue}) );
+        } else {
+          element.answers = [{'answer': obj['answer_'+index]}];
+        }
+        
+      }
+    });
+  }
+
+  return ret;
+};
 
 /**
  * Show
