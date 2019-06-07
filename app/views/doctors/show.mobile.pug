@@ -1,0 +1,41 @@
+extends ../layouts/default
+
+block main
+  h1= doctor.name.slice(0, 400)
+
+block content
+  .row
+    .col-md-8
+      p=doctor.specialization.slice(0, 1000)
+      .meta
+        - if (doctor.user)
+          - var name = doctor.user.name ? doctor.user.name : doctor.user.username
+          p Author :&nbsp;
+            a(href="/users/"+doctor.user._id)= name
+
+        //- - if (doctor.tags)
+        //-   p Tags &nbsp;
+        //-     each tag in doctor.tags.split(',').slice(0, 10)
+        //-       i.text-muted.fa.fa-tag &nbsp;
+        //-       a.tag(href="/tags/"+tag)= tag
+        //-       | &nbsp;&nbsp;
+
+        p.text-muted= formatDate(doctor.createdAt, "%b %d, %Y at %I:%M %p")
+
+    .col-md-4
+      - if (!doctor.isNew && doctor.image && doctor.image.files && doctor.image.files.length)
+        img(src=doctor.image.cdnUri + '/mini_' + doctor.image.files[0])
+
+  form(action="/doctors/"+doctor.id, method="post", onsubmit="return confirm('Are you sure?')")
+    input(type='hidden', name='_csrf', value=csrf_token)
+    a.btn.btn-outline-primary(href='/doctors/'+doctor._id+'/edit', title="edit") Edit
+    | &nbsp;
+    input(type="hidden", name="_method", value="DELETE")
+    button.btn.btn-link.text-danger(type="submit") Delete
+
+  //- br
+  //- h3 Comments
+  //- each comment, index in doctor.comments
+  //-   div(class=`py-3 ${index && 'border-top'}`)
+  //-     include ../comments/comment
+  //- include ../comments/form

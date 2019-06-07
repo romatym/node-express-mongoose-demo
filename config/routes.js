@@ -7,6 +7,7 @@
 const users = require('../app/controllers/users');
 const articles = require('../app/controllers/articles');
 const templates = require('../app/controllers/templates');
+const doctors = require('../app/controllers/doctors');
 const common = require('../app/controllers/common');
 const comments = require('../app/controllers/comments');
 const tags = require('../app/controllers/tags');
@@ -18,6 +19,7 @@ const auth = require('./middlewares/authorization');
 
 const articleAuth = [auth.requiresLogin, auth.article.hasAuthorization];
 const templateAuth = [auth.requiresLogin, auth.template.hasAuthorization];
+const doctorAuth = [auth.requiresLogin, auth.template.hasAuthorization];
 const commentAuth = [auth.requiresLogin, auth.comment.hasAuthorization];
 
 const fail = {
@@ -77,7 +79,7 @@ module.exports = function(app, passport) {
 
   app.param('userId', users.load);
 
-
+  //articles and templates have same parameter: "id:, so i need to check path to route 
   app.param('id', common.loadByID);
 
   // articles routes
@@ -99,6 +101,16 @@ module.exports = function(app, passport) {
   app.get('/templates/:id/edit', templateAuth, templates.edit);
   app.put('/templates/:id', templateAuth, templates.update);
   app.delete('/templates/:id', templateAuth, templates.destroy);
+
+  // doctors routes
+  //app.param('id', templates.load);
+  app.get('/doctors', doctors.index);
+  app.get('/doctors/new', auth.requiresLogin, doctors.new);
+  app.post('/doctors', auth.requiresLogin, doctors.create);
+  app.get('/doctors/:id', doctors.show);
+  app.get('/doctors/:id/edit', doctorAuth, doctors.edit);
+  app.put('/doctors/:id', doctorAuth, doctors.update);
+  app.delete('/doctors/:id', doctorAuth, doctors.destroy);
 
   // home route
   app.get('/', articles.index);

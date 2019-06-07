@@ -1,0 +1,27 @@
+doctor.doctor
+  h3
+    a(href='/doctors/'+doctor._id, title=doctor.name) #{doctor.name.slice(0, 150)}
+  p= doctor.phone.slice(0, 100)
+  p= doctor.email.slice(0, 100)
+  p= doctor.specialization.slice(0, 100)
+  p= doctor.template
+  p= doctor.comment.slice(0, 1000)
+
+  .meta
+    span.text-muted= formatDate(doctor.createdAt)
+
+    - if (doctor.user)
+      | &nbsp; - &nbsp;
+      span Author &nbsp;
+
+      - var name = doctor.user.name ? doctor.user.name : doctor.user.username
+
+      a(href="/users/"+doctor.user._id)= name
+
+    //- - if (article.tags)
+    //-   | &nbsp; - &nbsp;
+    //-   span Tags &nbsp;
+    //-   each tag in article.tags.split(',').slice(0, 10)
+    //-     i.text-muted.fa.fa-tag &nbsp;
+    //-     a.tag(href="/tags/"+tag)= tag
+    //-     | &nbsp;&nbsp;

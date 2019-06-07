@@ -10,6 +10,8 @@ nav.navbar.navbar-expand-md.navbar-dark.fixed-top.bg-dark
         a.nav-link(href="/templates", title="templates") Templates
       li(class=isActive('/templates/new') ? 'active nav-item' : 'nav-item')
         a.nav-link(href="/templates/new", title="templates") +template
+      li(class=isActive('/doctors') ? 'active nav-item' : 'nav-item')
+        a.nav-link(href="/doctors", title="templates") Doctors
       - if (req.isAuthenticated())
         li.nav-item(class=isActive(`/users/${req.user.id}`) && 'active')
           a.nav-link(href="/users/"+req.user.id, title="Profile") Profile
