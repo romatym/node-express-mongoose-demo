@@ -22,10 +22,17 @@ const DoctorSchema = new Schema({
   phone: { type: String, default: '', trim: true, maxlength: 100 },
   email: { type: String, default: '', trim: true, maxlength: 100 },
   specialization: { type: String, default: '', trim: true, maxlength: 100 },
-  //template: { type: String, default: '', trim: true, maxlength: 100 },
-  template: { type: Schema.ObjectId, ref: 'Template' },
+  template: { type: String, default: '', trim: true, maxlength: 100 },
+  //template: { type: Schema.ObjectId, ref: 'Template' },
   comment: { type: String, default: '', trim: true, maxlength: 1000 },
   user: { type: Schema.ObjectId, ref: 'User' },
+  // comments: [
+  //   {
+  //     body: { type: String, default: '', maxlength: 1000 },
+  //     user: { type: Schema.ObjectId, ref: 'User' },
+  //     createdAt: { type: Date, default: Date.now }
+  //   }
+  // ],
   image: {
     cdnUri: String,
     files: []

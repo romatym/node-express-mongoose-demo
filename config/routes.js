@@ -19,7 +19,7 @@ const auth = require('./middlewares/authorization');
 
 const articleAuth = [auth.requiresLogin, auth.article.hasAuthorization];
 const templateAuth = [auth.requiresLogin, auth.template.hasAuthorization];
-const doctorAuth = [auth.requiresLogin, auth.template.hasAuthorization];
+const doctorAuth = [auth.requiresLogin, auth.doctor.hasAuthorization];
 const commentAuth = [auth.requiresLogin, auth.comment.hasAuthorization];
 
 const fail = {
@@ -109,6 +109,7 @@ module.exports = function(app, passport) {
   app.post('/doctors', auth.requiresLogin, doctors.create);
   app.get('/doctors/:id', doctors.show);
   app.get('/doctors/:id/edit', doctorAuth, doctors.edit);
+  //app.get('/doctors/:id/edit', doctors.edit);
   app.put('/doctors/:id', doctorAuth, doctors.update);
   app.delete('/doctors/:id', doctorAuth, doctors.destroy);
 

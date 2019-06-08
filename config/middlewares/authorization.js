@@ -52,6 +52,20 @@ exports.template = {
   }
 };
 
+/*
+ *  Template authorization routing middleware
+ */
+
+exports.doctor = {
+  hasAuthorization: function(req, res, next) {
+    if (req.doctor.user.id != req.user.id) {
+      req.flash('info', 'You are not authorized');
+      return res.redirect('/doctors/' + req.doctor.id);
+    }
+    next();
+  }
+};
+
 /**
  * Comment authorization routing middleware
  */

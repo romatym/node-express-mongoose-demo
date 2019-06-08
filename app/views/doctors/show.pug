@@ -13,13 +13,6 @@ block content
           p Author :&nbsp;
             a(href="/users/"+doctor.user._id)= name
 
-        //- - if (doctor.tags)
-        //-   p Tags &nbsp;
-        //-     each tag in doctor.tags.split(',').slice(0, 10)
-        //-       i.text-muted.fa.fa-tag &nbsp;
-        //-       a.tag(href="/tags/"+tag)= tag
-        //-       | &nbsp;&nbsp;
-
         p.text-muted= formatDate(doctor.createdAt, "%b %d, %Y at %I:%M %p")
 
     .col-md-4

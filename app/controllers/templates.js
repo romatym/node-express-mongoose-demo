@@ -141,6 +141,21 @@ function retProp(obj, keys){
     });
   }
 
+  // module.exports = function(obj, keys){
+  //   obj = obj || {};
+  //   if ('string' == typeof keys) keys = keys.split(/ +/);
+  //   return keys.reduce(function(ret, key){
+  //     if(key === 'question' || key === 'questions') {
+  //       ret['questions'] = obj[key].map(element => ({ 'question': element }));
+  //     } else  {
+  //       if (null == obj[key]) return ret;
+  //       ret[key] = obj[key];
+  //     }
+  //     return ret;
+  //   }, {});
+  // };
+  
+
   return ret;
 };
 
