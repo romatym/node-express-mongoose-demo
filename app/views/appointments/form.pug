@@ -1,0 +1,58 @@
+extends ../layouts/default
+
+block main
+  h1= title
+
+block content
+  - var action = '/appointments'
+  - action += appointment.isNew? '' : '/' + appointment.id
+
+  .row
+    .col-md-8
+      form(method="post", action=action, enctype="multipart/form-data", role="form")
+
+        input(type="hidden", name="_csrf", value=csrf_token)
+
+        - if (!appointment.isNew)
+          input(type="hidden", name="_method", value="PUT")
+
+        .form-group
+          label(for='title') Name
+          input.form-control#name(type='text', name="name", value=appointment.name, placeholder='Enter the name')
+
+        .form-group
+          label(for='phone') phone
+          input.form-control#phone(type='text', name="phone", value=appointment.phone, placeholder='Enter the phone')
+
+        .form-group
+          label(for='email') Name
+          input.form-control#email(type='text', name="email", value=appointment.email, placeholder='Enter the email')
+
+        .form-group
+          label(for='doctor') doctor
+          input.form-control#doctor(type='text', name="doctor", value=appointment.doctor, placeholder='Choose the doctor')
+
+        .form-group
+          label(for='datetime') datetime
+          input.form-control#datetime(type='datetime-local', name="datetime", value=appointment.datetime, placeholder='Choose date&time')
+
+        .form-group
+          label(for='file') Image
+          input.form-control-file#file(type='file', name="image")
+
+        .form-group
+          label(for='desc') Comment
+          textarea.form-control#desc(rows="5", name="comment", placeholder='Enter the appointment description')=appointment.comment
+
+        .form-group
+          label(for='tags') Tags
+          input.form-control#tags(type='text', name="tags", value=appointment.tags, placeholder='Enter the tags')
+
+        
+        button.btn.btn-primary(type='submit') Save
+        | &nbsp;
+        a.btn.btn-link(href='/appointments', title="cancel") Cancel
+
+    .col-md-4
+      - if (!appointment.isNew && appointment.image && appointment.image.files && appointment.image.files.length)
+        img(src=appointment.image.cdnUri + "/mini_" + appointment.image.files[0])

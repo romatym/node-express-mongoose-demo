@@ -53,7 +53,7 @@ exports.template = {
 };
 
 /*
- *  Template authorization routing middleware
+ *  Doctor authorization routing middleware
  */
 
 exports.doctor = {
@@ -61,6 +61,20 @@ exports.doctor = {
     if (req.doctor.user.id != req.user.id) {
       req.flash('info', 'You are not authorized');
       return res.redirect('/doctors/' + req.doctor.id);
+    }
+    next();
+  }
+};
+
+/*
+ *  appointments authorization routing middleware
+ */
+
+exports.appointment = {
+  hasAuthorization: function(req, res, next) {
+    if (req.appointment.user.id != req.user.id) {
+      req.flash('info', 'You are not authorized');
+      return res.redirect('/appointments/' + req.appointment.id);
     }
     next();
   }

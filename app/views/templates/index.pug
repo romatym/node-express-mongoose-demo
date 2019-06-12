@@ -2,6 +2,7 @@ extends ../layouts/default
 
 block main
   h1= title
+  a.nav-link(href='/templates/new', title='add template') +template
 
 block content
   - if (templates.length)

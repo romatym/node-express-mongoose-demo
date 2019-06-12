@@ -21,11 +21,12 @@ const setTags = tags => tags.split(',').slice(0, 10); // max tags
  */
 
 const AppointmentSchema = new Schema({
-  Name: { type: String, default: '', trim: true, maxlength: 150 },
-  Phone: { type: String, default: '', trim: true, maxlength: 100 },
-  Email: { type: String, default: '', trim: true, maxlength: 100 },
-  Doctor: { type: String, default: '', trim: true, maxlength: 100 },
-  Comment: { type: String, default: '', trim: true, maxlength: 1000 },
+  name: { type: String, default: '', trim: true, maxlength: 150 },
+  phone: { type: String, default: '', trim: true, maxlength: 100 },
+  email: { type: String, default: '', trim: true, maxlength: 100 },
+  doctor: { type: String, default: '', trim: true, maxlength: 100 },
+  datetime: { type: Date, default: Date.now },
+  comment: { type: String, default: '', trim: true, maxlength: 1000 },
   user: { type: Schema.ObjectId, ref: 'User' },
   comments: [
     {
@@ -34,7 +35,6 @@ const AppointmentSchema = new Schema({
       createdAt: { type: Date, default: Date.now }
     }
   ],
-  
   tags: { type: [], get: getTags, set: setTags },
   image: {
     cdnUri: String,
@@ -47,8 +47,9 @@ const AppointmentSchema = new Schema({
  * Validations
  */
 
-//AppointmentSchema.path('name').required(true, 'Appointment title cannot be blank');
-//AppointmentSchema.path('phone').required(true, 'Appointment body cannot be blank');
+AppointmentSchema.path('name').required(true, 'Appointment name cannot be blank');
+AppointmentSchema.path('phone').required(true, 'Appointment phone cannot be blank');
+AppointmentSchema.path('doctor').required(true, 'Appointment doctor cannot be blank');
 
 /**
  * Pre-remove hook
@@ -158,7 +159,7 @@ AppointmentSchema.statics = {
   },
 
   /**
-   * List articles
+   * List appointments
    *
    * @param {Object} options
    * @api private

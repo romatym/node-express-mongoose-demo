@@ -8,6 +8,7 @@ const users = require('../app/controllers/users');
 const articles = require('../app/controllers/articles');
 const templates = require('../app/controllers/templates');
 const doctors = require('../app/controllers/doctors');
+const appointments = require('../app/controllers/appointments');
 const common = require('../app/controllers/common');
 const comments = require('../app/controllers/comments');
 const tags = require('../app/controllers/tags');
@@ -20,6 +21,7 @@ const auth = require('./middlewares/authorization');
 const articleAuth = [auth.requiresLogin, auth.article.hasAuthorization];
 const templateAuth = [auth.requiresLogin, auth.template.hasAuthorization];
 const doctorAuth = [auth.requiresLogin, auth.doctor.hasAuthorization];
+const appointmentAuth = [auth.requiresLogin, auth.appointment.hasAuthorization];
 const commentAuth = [auth.requiresLogin, auth.comment.hasAuthorization];
 
 const fail = {
@@ -112,6 +114,17 @@ module.exports = function(app, passport) {
   //app.get('/doctors/:id/edit', doctors.edit);
   app.put('/doctors/:id', doctorAuth, doctors.update);
   app.delete('/doctors/:id', doctorAuth, doctors.destroy);
+
+  // appointments routes
+  //app.param('id', templates.load);
+  app.get('/appointments', appointments.index);
+  app.get('/appointments/new', auth.requiresLogin, appointments.new);
+  app.post('/appointments', auth.requiresLogin, appointments.create);
+  app.get('/appointments/:id', appointments.show);
+  app.get('/appointments/:id/edit', appointmentAuth, appointments.edit);
+  //app.get('/appointments/:id/edit', appointments.edit);
+  app.put('/appointments/:id', appointmentAuth, appointments.update);
+  app.delete('/appointments/:id', appointmentAuth, appointments.destroy);
 
   // home route
   app.get('/', articles.index);

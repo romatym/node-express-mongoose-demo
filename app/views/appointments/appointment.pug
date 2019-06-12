@@ -1,0 +1,23 @@
+appointment.appointment
+  h3
+    a(href='/appointments/'+appointment._id, title=appointment.name) #{appointment.name.slice(0, 140)}
+  p= appointment.doctor.slice(0, 400)
+
+  .meta
+    span.text-muted= formatDate(appointment.createdAt)
+
+    - if (appointment.user)
+      | &nbsp; - &nbsp;
+      span Author &nbsp;
+
+      - var name = appointment.user.name ? appointment.user.name : appointment.user.username
+
+      a(href="/users/"+appointment.user._id)= name
+
+    - if (appointment.tags)
+      | &nbsp; - &nbsp;
+      span Tags &nbsp;
+      each tag in appointment.tags.split(',').slice(0, 10)
+        i.text-muted.fa.fa-tag &nbsp;
+        a.tag(href="/tags/"+tag)= tag
+        | &nbsp;&nbsp;
