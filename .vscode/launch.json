@@ -17,15 +17,6 @@
             "port": 3000
         },
         {
-            "name": "Chrome",
-            "type": "chrome",
-            "request": "launch",
-            "protocol": "legacy",
-            "url": "http://localhost:3000",
-            "webRoot": "${workspaceRoot}"
-        },
-
-        {
             "type": "chrome",
             "request": "attach",
             "name": "Attach to Chrome",
@@ -38,15 +29,6 @@
             "protocol": "legacy",
             "name": "Attach by Process ID",
             "processId": "${command:PickProcess}"
-        },
-
-        {
-            "type": "chrome",
-            "request": "launch",
-            "protocol": "legacy",
-            "name": "Launch Chrome",
-            "url": "http://localhost:3000",
-            "webRoot": "${workspaceFolder}\\server.js"
         },
         {
             "type": "node",

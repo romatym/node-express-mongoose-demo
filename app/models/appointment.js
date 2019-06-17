@@ -20,11 +20,14 @@ const setTags = tags => tags.split(',').slice(0, 10); // max tags
  * Appointment Schema
  */
 
+//var DoctorSchema = require('mongoose').model('Doctor');
+
 const AppointmentSchema = new Schema({
   name: { type: String, default: '', trim: true, maxlength: 150 },
   phone: { type: String, default: '', trim: true, maxlength: 100 },
   email: { type: String, default: '', trim: true, maxlength: 100 },
   doctor: { type: String, default: '', trim: true, maxlength: 100 },
+  //doctor: DoctorSchema,
   datetime: { type: Date, default: Date.now },
   comment: { type: String, default: '', trim: true, maxlength: 1000 },
   user: { type: Schema.ObjectId, ref: 'User' },

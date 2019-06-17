@@ -86,10 +86,21 @@ exports.create = async(function*(req, res) {
  */
 
 exports.edit = function(req, res) {
-  res.render('appointments/edit', {
-    title: 'Edit ' + req.appointment.name,
-    appointment: req.appointment
-  });
+  
+  //const Schema = mongoose.Schema;
+  var Doctor = mongoose.model('Doctor');
+  Doctor.find({}, 'name specialization _id', function (err, doctors) {
+    if (err) return handleError(err);
+    // 'doctors' содержит список врачей, соответствующих критерию.
+
+    res.render('appointments/edit', {
+      title: 'Edit ' + req.appointment.name,
+      appointment: req.appointment,
+      doctors: doctors
+    });
+  })
+
+  
 };
 
 /**
