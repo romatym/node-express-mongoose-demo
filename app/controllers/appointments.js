@@ -89,14 +89,14 @@ exports.edit = function(req, res) {
   
   //const Schema = mongoose.Schema;
   var Doctor = mongoose.model('Doctor');
-  Doctor.find({}, 'name specialization _id', function (err, doctors) {
+  Doctor.find({}, 'name specialization _id', function (err, doctorsList) {
     if (err) return handleError(err);
-    // 'doctors' содержит список врачей, соответствующих критерию.
+    // 'doctorsList' содержит список врачей, соответствующих критерию.
 
     res.render('appointments/edit', {
       title: 'Edit ' + req.appointment.name,
       appointment: req.appointment,
-      doctors: doctors
+      doctors: doctorsList
     });
   })
 
