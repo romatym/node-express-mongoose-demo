@@ -14,7 +14,7 @@ const assign = Object.assign;
  * Load
  */
 
-exports.load = async(function*(req, res, next, id) {
+exports.load = async(function* (req, res, next, id) {
   try {
     req.appointment = yield Appointment.load(id);
     if (!req.appointment) return next(new Error('Appointment not found'));
@@ -28,7 +28,7 @@ exports.load = async(function*(req, res, next, id) {
  * List
  */
 
-exports.index = async(function*(req, res) {
+exports.index = async(function* (req, res) {
   const page = (req.query.page > 0 ? req.query.page : 1) - 1;
   const _id = req.query.item;
   const limit = 15;
@@ -54,10 +54,19 @@ exports.index = async(function*(req, res) {
  * New appointment
  */
 
-exports.new = function(req, res) {
-  res.render('appointments/new', {
-    title: 'New Appointment',
-    appointment: new Appointment()
+exports.new = function (req, res) {
+
+  var Doctor = mongoose.model('Doctor');
+  Doctor.find({}, 'name specialization _id', function (err, doctorsList) {
+    if (err) return handleError(err);
+
+
+    res.render('appointments/new', {
+      title: 'New Appointment',
+      appointment: new Appointment(),
+      doctors: doctorsList
+    });
+
   });
 };
 
@@ -65,7 +74,7 @@ exports.new = function(req, res) {
  * Create an appointment
  */
 
-exports.create = async(function*(req, res) {
+exports.create = async(function* (req, res) {
   const appointment = new Appointment(only(req.body, 'name phone email doctor comment comments tags'));
   appointment.user = req.user;
   try {
@@ -85,8 +94,8 @@ exports.create = async(function*(req, res) {
  * Edit an appointment
  */
 
-exports.edit = function(req, res) {
-  
+exports.edit = function (req, res) {
+
   //const Schema = mongoose.Schema;
   var Doctor = mongoose.model('Doctor');
   Doctor.find({}, 'name specialization _id', function (err, doctorsList) {
@@ -100,14 +109,14 @@ exports.edit = function(req, res) {
     });
   })
 
-  
+
 };
 
 /**
  * Update appointment
  */
 
-exports.update = async(function*(req, res) {
+exports.update = async(function* (req, res) {
   const appointment = req.appointment;
   assign(appointment, only(req.body, 'title body tags'));
   try {
@@ -126,7 +135,7 @@ exports.update = async(function*(req, res) {
  * Show
  */
 
-exports.show = function(req, res) {
+exports.show = function (req, res) {
   res.render('appointments/show', {
     title: req.appointment.name,
     appointment: req.appointment
@@ -137,7 +146,7 @@ exports.show = function(req, res) {
  * Delete an appointment
  */
 
-exports.destroy = async(function*(req, res) {
+exports.destroy = async(function* (req, res) {
   yield req.appointment.remove();
   req.flash('info', 'Deleted successfully');
   res.redirect('/appointments');
