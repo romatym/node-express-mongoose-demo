@@ -10,6 +10,14 @@ const only = require('only');
 const Appointment = mongoose.model('Appointment');
 const assign = Object.assign;
 
+// var Doctor = mongoose.model('Doctor');
+// var doctorsList = Doctor.find({}, 'name specialization _id', function (err, res) {
+//   if (err) return handleError(err);
+
+//   return res;
+
+// });
+
 /**
  * Load
  */
@@ -60,11 +68,11 @@ exports.new = function (req, res) {
   Doctor.find({}, 'name specialization _id', function (err, doctorsList) {
     if (err) return handleError(err);
 
-
     res.render('appointments/new', {
       title: 'New Appointment',
       appointment: new Appointment(),
-      doctors: doctorsList
+      doctors: doctorsList,
+      datetime: new Date().toISOString().slice(0,16)
     });
 
   });
@@ -105,7 +113,8 @@ exports.edit = function (req, res) {
     res.render('appointments/edit', {
       title: 'Edit ' + req.appointment.name,
       appointment: req.appointment,
-      doctors: doctorsList
+      doctors: doctorsList,
+      datetime: req.appointment.datetime.toISOString().slice(0,16)
     });
   })
 
@@ -118,7 +127,9 @@ exports.edit = function (req, res) {
 
 exports.update = async(function* (req, res) {
   const appointment = req.appointment;
-  assign(appointment, only(req.body, 'title body tags'));
+  const aaa = retProp(req.body, 'name phone email doctor datetime comment');
+
+  assign(appointment, aaa);
   try {
     yield appointment.uploadAndSave(req.file);
     res.redirect(`/appointments/${appointment._id}`);
@@ -130,6 +141,33 @@ exports.update = async(function* (req, res) {
     });
   }
 });
+
+function retProp(obj, keys) {
+  obj = obj || {};
+  if ('string' == typeof keys) keys = keys.split(/ +/);
+  var ret = keys.reduce(function(ret, key) {
+    if (null == obj[key]) return ret;
+    if(key === 'question') {
+      ret.questions = obj[key].map(currentValue => ({'question': currentValue}) );
+    } else {
+      ret[key] = obj[key];
+    }
+    return ret;
+  }, {});
+
+  if(ret['questions']) {
+    ret.questions.forEach((element, index) => {
+      if(obj['answer_'+index]) {
+        if( Array.isArray( obj['answer_'+index]) ) {
+          element.answers = obj['answer_'+index].map(currentValue => ({'answer': currentValue}) );
+        } else {
+          element.answers = [{'answer': obj['answer_'+index]}];
+        }
+        
+      }
+    });
+  }
+}
 
 /**
  * Show

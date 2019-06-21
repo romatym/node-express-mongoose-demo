@@ -30,19 +30,17 @@ block content
 
         .form-group
           label(for='doctor') Doctor
-          //- p
-          select(name='doctor')
+          p
+          //- select(name='doctor')
+          input.form-control#doctor(type='text', name="doctor", list='doctor_list', value=appointment.doctor, placeholder='Choose the doctor')
+          datalist#doctor_list
             each item in doctors
-              - if (appointment.doctor===item.id)
-                  option(value=item.id selected)=item.name
-              - else
-                  option(value=item.id)=item.name
-          input.form-control#doctor(type='text', name="doctor", value=appointment.doctor, placeholder='Choose the doctor')
+              option(value=item.name data-value=item.id)=item.specialization
 
         .form-group
           label(for='datetime') datetime
-          input.form-control#datetime(type='datetime-local', name="datetime", value=appointment.datetime, placeholder='Choose date&time')
-
+          input.form-control#datetime(type='datetime-local', name="datetime", value=datetime placeholder='Choose date&time' step="300")
+          
         .form-group
           label(for='file') Image
           input.form-control-file#file(type='file', name="image")
