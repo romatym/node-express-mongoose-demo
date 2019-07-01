@@ -72,7 +72,7 @@ exports.new = function (req, res) {
       title: 'New Appointment',
       appointment: new Appointment(),
       doctors: doctorsList,
-      datetime: new Date().toISOString().slice(0,16)
+      datetime: new Date().toISOString().slice(0, 16)
     });
 
   });
@@ -110,11 +110,13 @@ exports.edit = function (req, res) {
     if (err) return handleError(err);
     // 'doctorsList' содержит список врачей, соответствующих критерию.
 
+    req.appointment.doctors = doctorsList.slice(0);
+    
     res.render('appointments/edit', {
       title: 'Edit ' + req.appointment.name,
       appointment: req.appointment,
-      doctors: doctorsList,
-      datetime: req.appointment.datetime.toISOString().slice(0,16)
+      // doctors: doctorsList,
+      datetime: req.appointment.datetime.toISOString().slice(0, 16)
     });
   })
 
@@ -129,41 +131,51 @@ exports.update = async(function* (req, res) {
   const appointment = req.appointment;
   const aaa = retProp(req.body, 'name phone email doctor datetime comment');
 
-  assign(appointment, aaa);
-  try {
-    yield appointment.uploadAndSave(req.file);
-    res.redirect(`/appointments/${appointment._id}`);
-  } catch (err) {
-    res.status(422).render('appointments/edit', {
-      title: 'Edit ' + appointment.name,
-      errors: [err.toString()],
-      appointment
-    });
-  }
+  var Doctor = mongoose.model('Doctor');
+
+  yield Doctor.find( {}, 'name specialization _id', 
+    function (err, doctorsList) {
+      if (err) return handleError(err);
+
+      assign(appointment, aaa);
+      appointment.doctor = doctorsList.find(obj => {return obj.name === req.body.doctor}).id;
+
+      try {
+        appointment.uploadAndSave(req.file);
+        res.redirect(`/appointments/${appointment._id}`);
+      } catch (err) {
+        res.status(422).render('appointments/edit', {
+          title: 'Edit ' + appointment.name,
+          errors: [err.toString()],
+          appointment
+        });
+      }
+  });
+
 });
 
 function retProp(obj, keys) {
   obj = obj || {};
   if ('string' == typeof keys) keys = keys.split(/ +/);
-  var ret = keys.reduce(function(ret, key) {
+  var ret = keys.reduce(function (ret, key) {
     if (null == obj[key]) return ret;
-    if(key === 'question') {
-      ret.questions = obj[key].map(currentValue => ({'question': currentValue}) );
+    if (key === 'question') {
+      ret.questions = obj[key].map(currentValue => ({ 'question': currentValue }));
     } else {
       ret[key] = obj[key];
     }
     return ret;
   }, {});
 
-  if(ret['questions']) {
+  if (ret['questions']) {
     ret.questions.forEach((element, index) => {
-      if(obj['answer_'+index]) {
-        if( Array.isArray( obj['answer_'+index]) ) {
-          element.answers = obj['answer_'+index].map(currentValue => ({'answer': currentValue}) );
+      if (obj['answer_' + index]) {
+        if (Array.isArray(obj['answer_' + index])) {
+          element.answers = obj['answer_' + index].map(currentValue => ({ 'answer': currentValue }));
         } else {
-          element.answers = [{'answer': obj['answer_'+index]}];
+          element.answers = [{ 'answer': obj['answer_' + index] }];
         }
-        
+
       }
     });
   }
