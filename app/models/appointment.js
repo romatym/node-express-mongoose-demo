@@ -27,7 +27,7 @@ const AppointmentSchema = new Schema({
   phone: { type: String, default: '', trim: true, maxlength: 100 },
   email: { type: String, default: '', trim: true, maxlength: 100 },
   //doctor: { type: String, default: '', trim: true, maxlength: 100 },
-  doctor: { type: Schema.Types.ObjectId, ref: 'Doctor' },
+  doctor: { type: Schema.ObjectId, ref: 'Doctor' },
   datetime: { type: Date, default: Date.now },
   comment: { type: String, default: '', trim: true, maxlength: 1000 },
   user: { type: Schema.ObjectId, ref: 'User' },
@@ -43,7 +43,15 @@ const AppointmentSchema = new Schema({
     cdnUri: String,
     files: []
   },
-  createdAt: { type: Date, default: Date.now }
+  createdAt: { type: Date, default: Date.now },
+  doctors: [
+    {
+      name: { type: String, default: '', maxlength: 255 },
+      specialization: { type: String, default: '', maxlength: 255 },
+      id: { type: Schema.ObjectId, ref: 'Doctor' }
+    }, {strict: false}
+  ]
+  // strict: false
 });
 
 /**
@@ -158,7 +166,13 @@ AppointmentSchema.statics = {
     return this.findOne({ _id })
       .populate('user', 'name email username')
       .populate('comments.user')
+      .populate('doctor', 'name specialization')
       .exec();
+
+    // return this.findOne({ _id })
+    //   .populate('user', 'name email username')
+    //   .populate('comments.user')
+    //   .exec();
   },
 
   /**
@@ -178,7 +192,19 @@ AppointmentSchema.statics = {
       .limit(limit)
       .skip(limit * page)
       .exec();
+  },
+
+  fillDoctors: function() {
+    console.log("111");
+    var Doctor = mongoose.model('Doctor');
+    //var doctorsList;
+    Doctor.find({}, 'name specialization _id', function (err, doctorsList) {
+      //if (err) return handleError(err);
+      return doctorsList;
+    });
+    // .exec((err, res) => {return res});
   }
+
 };
 
 mongoose.model('Appointment', AppointmentSchema);

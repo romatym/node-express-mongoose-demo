@@ -68,12 +68,23 @@ exports.new = function (req, res) {
   Doctor.find({}, 'name specialization _id', function (err, doctorsList) {
     if (err) return handleError(err);
 
+    var newAppointment = new Appointment();
+    //newAppointment.doctors = doctorsList.slice(0);
+    Appointment.fillDoctors();
+
     res.render('appointments/new', {
       title: 'New Appointment',
-      appointment: new Appointment(),
-      doctors: doctorsList,
+      appointment: newAppointment,
+      //doctors: doctorsList,
       datetime: new Date().toISOString().slice(0, 16)
     });
+    
+    // res.render('appointments/new', {
+    //   title: 'New Appointment',
+    //   appointment: new Appointment(),
+    //   doctors: doctorsList,
+    //   datetime: new Date().toISOString().slice(0, 16)
+    // });
 
   });
 };
@@ -85,6 +96,8 @@ exports.new = function (req, res) {
 exports.create = async(function* (req, res) {
   const appointment = new Appointment(only(req.body, 'name phone email doctor comment comments tags'));
   appointment.user = req.user;
+  appointment.fillDoctors();
+  // appointment.doctors = [];
   try {
     yield appointment.uploadAndSave(req.file);
     req.flash('success', 'Successfully created appointment!');
@@ -110,12 +123,12 @@ exports.edit = function (req, res) {
     if (err) return handleError(err);
     // 'doctorsList' содержит список врачей, соответствующих критерию.
 
-    req.appointment.doctors = doctorsList.slice(0);
+    //req.appointment.doctors = doctorsList.slice(0);
     
     res.render('appointments/edit', {
       title: 'Edit ' + req.appointment.name,
       appointment: req.appointment,
-      // doctors: doctorsList,
+      doctors: doctorsList,
       datetime: req.appointment.datetime.toISOString().slice(0, 16)
     });
   })
