@@ -10,14 +10,6 @@ const only = require('only');
 const Appointment = mongoose.model('Appointment');
 const assign = Object.assign;
 
-// var Doctor = mongoose.model('Doctor');
-// var doctorsList = Doctor.find({}, 'name specialization _id', function (err, res) {
-//   if (err) return handleError(err);
-
-//   return res;
-
-// });
-
 /**
  * Load
  */
@@ -62,32 +54,19 @@ exports.index = async(function* (req, res) {
  * New appointment
  */
 
-exports.new = function (req, res) {
+exports.new = async(function* (req, res) {
 
-  var Doctor = mongoose.model('Doctor');
-  Doctor.find({}, 'name specialization _id', function (err, doctorsList) {
-    if (err) return handleError(err);
+  var newAppointment = new Appointment();
+  const doctorsList = yield Appointment.fillDoctors();
+  newAppointment.doctors = doctorsList.slice(0);
 
-    var newAppointment = new Appointment();
-    //newAppointment.doctors = doctorsList.slice(0);
-    Appointment.fillDoctors();
-
-    res.render('appointments/new', {
-      title: 'New Appointment',
-      appointment: newAppointment,
-      //doctors: doctorsList,
-      datetime: new Date().toISOString().slice(0, 16)
-    });
-    
-    // res.render('appointments/new', {
-    //   title: 'New Appointment',
-    //   appointment: new Appointment(),
-    //   doctors: doctorsList,
-    //   datetime: new Date().toISOString().slice(0, 16)
-    // });
-
+  res.render('appointments/new', {
+    title: 'New Appointment',
+    appointment: newAppointment,
+    //doctors: doctorsList,
+    datetime: new Date().toISOString().slice(0, 16)
   });
-};
+});
 
 /**
  * Create an appointment
@@ -96,8 +75,8 @@ exports.new = function (req, res) {
 exports.create = async(function* (req, res) {
   const appointment = new Appointment(only(req.body, 'name phone email doctor comment comments tags'));
   appointment.user = req.user;
-  appointment.fillDoctors();
-  // appointment.doctors = [];
+  //const doctorsList = yield Appointment.fillDoctors();
+
   try {
     yield appointment.uploadAndSave(req.file);
     req.flash('success', 'Successfully created appointment!');
@@ -115,26 +94,19 @@ exports.create = async(function* (req, res) {
  * Edit an appointment
  */
 
-exports.edit = function (req, res) {
+exports.edit = async(function* (req, res) {
 
-  //const Schema = mongoose.Schema;
-  var Doctor = mongoose.model('Doctor');
-  Doctor.find({}, 'name specialization _id', function (err, doctorsList) {
-    if (err) return handleError(err);
-    // 'doctorsList' содержит список врачей, соответствующих критерию.
+  const doctorsList = yield Appointment.fillDoctors();
+  req.appointment.doctors = doctorsList.slice(0);
 
-    //req.appointment.doctors = doctorsList.slice(0);
-    
-    res.render('appointments/edit', {
-      title: 'Edit ' + req.appointment.name,
-      appointment: req.appointment,
-      doctors: doctorsList,
-      datetime: req.appointment.datetime.toISOString().slice(0, 16)
-    });
-  })
+  res.render('appointments/edit', {
+    title: 'Edit ' + req.appointment.name,
+    appointment: req.appointment,
+    doctors: doctorsList,
+    datetime: req.appointment.datetime.toISOString().slice(0, 16)
+  });
 
-
-};
+});
 
 /**
  * Update appointment
@@ -144,26 +116,22 @@ exports.update = async(function* (req, res) {
   const appointment = req.appointment;
   const aaa = retProp(req.body, 'name phone email doctor datetime comment');
 
-  var Doctor = mongoose.model('Doctor');
+  const doctorsList = yield Appointment.fillDoctors();
+  appointment.doctors = doctorsList.slice(0);
 
-  yield Doctor.find( {}, 'name specialization _id', 
-    function (err, doctorsList) {
-      if (err) return handleError(err);
+  assign(appointment, aaa);
+  //appointment.doctor = doctorsList.find(obj => { return obj.name === req.body.doctor }).id;
 
-      assign(appointment, aaa);
-      appointment.doctor = doctorsList.find(obj => {return obj.name === req.body.doctor}).id;
-
-      try {
-        appointment.uploadAndSave(req.file);
-        res.redirect(`/appointments/${appointment._id}`);
-      } catch (err) {
-        res.status(422).render('appointments/edit', {
-          title: 'Edit ' + appointment.name,
-          errors: [err.toString()],
-          appointment
-        });
-      }
-  });
+  try {
+    appointment.uploadAndSave(req.file);
+    res.redirect(`/appointments/${appointment._id}`);
+  } catch (err) {
+    res.status(422).render('appointments/edit', {
+      title: 'Edit ' + appointment.name,
+      errors: [err.toString()],
+      appointment
+    });
+  }
 
 });
 

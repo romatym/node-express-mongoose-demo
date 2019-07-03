@@ -32,7 +32,8 @@ block content
           label(for='doctor') Doctor
           p
           //- select(name='doctor')
-          input.form-control#doctor(type='text', name="doctor", list='doctor_list', value=appointment.doctor, placeholder='Choose the doctor')
+          input.form-control#doctor(type='text', name="doctor", list='doctor_list', value=appointment.doctor, placeholder='Choose the doctor')          
+          //- input.form-control#doctorid(type='hidden', name="doctorid", value=selection == 'appointment.doctor.id')
           datalist#doctor_list
             each item in appointment.doctors
               option(value=item.name data-value=item.id)=item.specialization

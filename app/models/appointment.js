@@ -26,8 +26,8 @@ const AppointmentSchema = new Schema({
   name: { type: String, default: '', trim: true, maxlength: 150 },
   phone: { type: String, default: '', trim: true, maxlength: 100 },
   email: { type: String, default: '', trim: true, maxlength: 100 },
-  //doctor: { type: String, default: '', trim: true, maxlength: 100 },
-  doctor: { type: Schema.ObjectId, ref: 'Doctor' },
+  doctor: { type: String, default: '', trim: true, maxlength: 100 },
+  //doctor: { type: Schema.ObjectId, ref: 'Doctor' },
   datetime: { type: Date, default: Date.now },
   comment: { type: String, default: '', trim: true, maxlength: 1000 },
   user: { type: Schema.ObjectId, ref: 'User' },
@@ -43,14 +43,14 @@ const AppointmentSchema = new Schema({
     cdnUri: String,
     files: []
   },
-  createdAt: { type: Date, default: Date.now },
-  doctors: [
-    {
-      name: { type: String, default: '', maxlength: 255 },
-      specialization: { type: String, default: '', maxlength: 255 },
-      id: { type: Schema.ObjectId, ref: 'Doctor' }
-    }, {strict: false}
-  ]
+  createdAt: { type: Date, default: Date.now }
+  // doctors: [
+  //   {
+  //     name: { type: String, default: '', maxlength: 255 },
+  //     specialization: { type: String, default: '', maxlength: 255 },
+  //     id: { type: Schema.ObjectId, ref: 'Doctor' }
+  //   }, {strict: false}
+  // ]
   // strict: false
 });
 
@@ -166,7 +166,6 @@ AppointmentSchema.statics = {
     return this.findOne({ _id })
       .populate('user', 'name email username')
       .populate('comments.user')
-      .populate('doctor', 'name specialization')
       .exec();
 
     // return this.findOne({ _id })
@@ -195,14 +194,14 @@ AppointmentSchema.statics = {
   },
 
   fillDoctors: function() {
-    console.log("111");
+    //console.log("111");
     var Doctor = mongoose.model('Doctor');
-    //var doctorsList;
-    Doctor.find({}, 'name specialization _id', function (err, doctorsList) {
-      //if (err) return handleError(err);
-      return doctorsList;
-    });
-    // .exec((err, res) => {return res});
+    // Doctor.find({}, 'name specialization _id', function (err, doctorsList) {
+    //   if (err) return handleError(err);
+    //   obj.doctors = doctorsList.slice(0);
+    // });
+    return Doctor.find({}, 'name specialization _id')
+      .exec();
   }
 
 };
