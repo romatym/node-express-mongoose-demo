@@ -1,0 +1,23 @@
+group.group
+  h3
+    a(href='/groups/'+group._id, title=group.name) #{group.name.slice(0, 150)}
+  p= group.comment.slice(0, 1000)
+
+  .meta
+    span.text-muted= formatDate(group.createdAt)
+
+    - if (group.user)
+      | &nbsp; - &nbsp;
+      span Author &nbsp;
+
+      - var name = group.user.name ? group.user.name : group.user.username
+
+      a(href="/users/"+group.user._id)= name
+
+    //- - if (article.tags)
+    //-   | &nbsp; - &nbsp;
+    //-   span Tags &nbsp;
+    //-   each tag in article.tags.split(',').slice(0, 10)
+    //-     i.text-muted.fa.fa-tag &nbsp;
+    //-     a.tag(href="/tags/"+tag)= tag
+    //-     | &nbsp;&nbsp;

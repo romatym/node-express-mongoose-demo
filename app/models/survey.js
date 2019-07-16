@@ -6,9 +6,6 @@
 
 const mongoose = require('mongoose');
 const notify = require('../mailer');
-//module.exports
-//var Cat = require('./Doctor');
-//const DoctorSchema = mongoose.models.DoctorSchema || mongoose.model('Doctor');
 
 // const Imager = require('imager');
 // const config = require('../../config');
@@ -20,22 +17,12 @@ const getTags = tags => tags.join(',');
 const setTags = tags => tags.split(',').slice(0, 10); // max tags
 
 /**
- * Appointment Schema
+ * Survey Schema
  */
 
-console.log('12345');
-
-const DoctorSchema = mongoose.model('Doctor').schema;
-
-const AppointmentSchema = new Schema({
-  name: { type: String, default: '', trim: true, maxlength: 150 },
-  phone: { type: String, default: '', trim: true, maxlength: 100 },
-  email: { type: String, default: '', trim: true, maxlength: 100 },
-  //doctor: { type: String, default: '', trim: true, maxlength: 100 },
-  //doctor: { type: Schema.ObjectId, ref: 'Doctor' },
-  doctor: DoctorSchema,
-  datetime: { type: Date, default: Date.now },
-  comment: { type: String, default: '', trim: true, maxlength: 1000 },
+const SurveySchema = new Schema({
+  title: { type: String, default: '', trim: true, maxlength: 400 },
+  body: { type: String, default: '', trim: true, maxlength: 1000 },
   user: { type: Schema.ObjectId, ref: 'User' },
   comments: [
     {
@@ -50,36 +37,27 @@ const AppointmentSchema = new Schema({
     files: []
   },
   createdAt: { type: Date, default: Date.now }
-  // doctors: [
-  //   {
-  //     name: { type: String, default: '', maxlength: 255 },
-  //     specialization: { type: String, default: '', maxlength: 255 },
-  //     id: { type: Schema.ObjectId, ref: 'Doctor' }
-  //   }, {strict: false}
-  // ]
-  // strict: false
 });
 
 /**
  * Validations
  */
 
-AppointmentSchema.path('name').required(true, 'Appointment name cannot be blank');
-AppointmentSchema.path('phone').required(true, 'Appointment phone cannot be blank');
-AppointmentSchema.path('doctor').required(true, 'Appointment doctor cannot be blank');
+SurveySchema.path('title').required(true, 'Survey title cannot be blank');
+SurveySchema.path('body').required(true, 'Survey body cannot be blank');
 
 /**
  * Pre-remove hook
  */
 
-AppointmentSchema.pre('remove', function(next) {
+SurveySchema.pre('remove', function(next) {
   // const imager = new Imager(imagerConfig, 'S3');
   // const files = this.image.files;
 
   // if there are files associated with the item, remove from the cloud too
   // imager.remove(files, function (err) {
   //   if (err) return next(err);
-  // }, 'Appointment');
+  // }, 'survey');
 
   next();
 });
@@ -88,9 +66,9 @@ AppointmentSchema.pre('remove', function(next) {
  * Methods
  */
 
-AppointmentSchema.methods = {
+SurveySchema.methods = {
   /**
-   * Save Appointment and upload image
+   * Save survey and upload image
    *
    * @param {Object} images
    * @api private
@@ -111,7 +89,7 @@ AppointmentSchema.methods = {
         self.image = { cdnUri : cdnUri, files : files };
       }
       self.save(cb);
-    }, 'Appointment');
+    }, 'survey');
     */
   },
 
@@ -132,7 +110,7 @@ AppointmentSchema.methods = {
     if (!this.user.email) this.user.email = 'email@product.com';
 
     notify.comment({
-      Appointment: this,
+      survey: this,
       currentUser: user,
       comment: comment.body
     });
@@ -160,9 +138,9 @@ AppointmentSchema.methods = {
  * Statics
  */
 
-AppointmentSchema.statics = {
+SurveySchema.statics = {
   /**
-   * Find Appointment by id
+   * Find survey by id
    *
    * @param {ObjectId} id
    * @api private
@@ -173,15 +151,10 @@ AppointmentSchema.statics = {
       .populate('user', 'name email username')
       .populate('comments.user')
       .exec();
-
-    // return this.findOne({ _id })
-    //   .populate('user', 'name email username')
-    //   .populate('comments.user')
-    //   .exec();
   },
 
   /**
-   * List appointments
+   * List surveys
    *
    * @param {Object} options
    * @api private
@@ -197,19 +170,7 @@ AppointmentSchema.statics = {
       .limit(limit)
       .skip(limit * page)
       .exec();
-  },
-
-  fillDoctors: function() {
-    //console.log("111");
-    var Doctor = mongoose.model('Doctor');
-    // Doctor.find({}, 'name specialization _id', function (err, doctorsList) {
-    //   if (err) return handleError(err);
-    //   obj.doctors = doctorsList.slice(0);
-    // });
-    return Doctor.find({}, 'name specialization _id')
-      .exec();
   }
-
 };
 
-mongoose.model('Appointment', AppointmentSchema);
+mongoose.model('Survey', SurveySchema);

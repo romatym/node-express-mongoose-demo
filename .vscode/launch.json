@@ -7,14 +7,25 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "Launch via NPM",
-            "runtimeExecutable": "npm",
-            "runtimeArgs": [
-                "run-script",
-                "inspect",
-                "autoAttachChildProcesses"
-            ],
-            "port": 3000
+            "name": "nodemon",
+            "runtimeExecutable": "nodemon",
+            "program": "${workspaceFolder}/server.js",
+            "restart": true,
+            "console": "integratedTerminal",
+            "internalConsoleOptions": "neverOpen"
+        },
+        {
+            "type": "node",
+            "request": "attach",
+            "name": "Attach by Process ID",
+            "processId": "${command:PickProcess}"
+        },
+        {
+            "type": "chrome",
+            "request": "launch",
+            "name": "Launch Chrome",
+            "url": "http://localhost:3000",
+            "webRoot": "${workspaceFolder}"
         },
         {
             "type": "chrome",
@@ -22,20 +33,6 @@
             "name": "Attach to Chrome",
             "port": 3000,
             "webRoot": "${workspaceFolder}\\server.js"
-        },
-        {
-            "type": "node",
-            "request": "attach",
-            "protocol": "legacy",
-            "name": "Attach by Process ID",
-            "processId": "${command:PickProcess}"
-        },
-        {
-            "type": "node",
-            "request": "launch",
-            "protocol": "legacy",
-            "name": "Launch Node",
-            "program": "${workspaceFolder}\\server.js"
         }
     ]
 }

@@ -1,0 +1,42 @@
+extends ../layouts/default
+
+block main
+  h1= title
+
+block content
+  - var action = '/surveys'
+  - action += survey.isNew? '' : '/' + survey.id
+
+  .row
+    .col-md-8
+      form(method="post", action=action, enctype="multipart/form-data", role="form")
+
+        input(type="hidden", name="_csrf", value=csrf_token)
+
+        - if (!survey.isNew)
+          input(type="hidden", name="_method", value="PUT")
+
+        .form-group
+          label(for='title') Title
+          input.form-control#title(type='text', name="title", value=survey.title, placeholder='Enter the title')
+
+        .form-group
+          label(for='file') Image
+          input.form-control-file#file(type='file', name="image")
+
+        .form-group
+          label(for='desc') Body
+          textarea.form-control#desc(rows="5", name="body", placeholder='Enter the survey description')=survey.body
+
+        .form-group
+          label(for='tags') Tags
+          input.form-control#tags(type='text', name="tags", value=survey.tags, placeholder='Enter the tags')
+
+        
+        button.btn.btn-primary(type='submit') Save
+        | &nbsp;
+        a.btn.btn-link(href='/surveys', title="cancel") Cancel
+
+    .col-md-4
+      - if (!survey.isNew && survey.image && survey.image.files && survey.image.files.length)
+        img(src=survey.image.cdnUri + "/mini_" + survey.image.files[0])

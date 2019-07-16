@@ -1,0 +1,41 @@
+extends ../layouts/default
+
+block main
+  h1= owner.name.slice(0, 400)
+
+block content
+  .row
+    .col-md-8
+      //- p=owner.specialization.slice(0, 1000)
+      .meta
+        - if (owner.user)
+          - var name = owner.user.name ? owner.user.name : owner.user.username
+          p Author :&nbsp;
+            a(href="/users/"+owner.user._id)= name
+
+        //- - if (owner.tags)
+        //-   p Tags &nbsp;
+        //-     each tag in owner.tags.split(',').slice(0, 10)
+        //-       i.text-muted.fa.fa-tag &nbsp;
+        //-       a.tag(href="/tags/"+tag)= tag
+        //-       | &nbsp;&nbsp;
+
+        p.text-muted= formatDate(owner.createdAt, "%b %d, %Y at %I:%M %p")
+
+    .col-md-4
+      - if (!owner.isNew && owner.image && owner.image.files && owner.image.files.length)
+        img(src=owner.image.cdnUri + '/mini_' + owner.image.files[0])
+
+  form(action="/owners/"+owner.id, method="post", onsubmit="return confirm('Are you sure?')")
+    input(type='hidden', name='_csrf', value=csrf_token)
+    a.btn.btn-outline-primary(href='/owners/'+owner._id+'/edit', title="edit") Edit
+    | &nbsp;
+    input(type="hidden", name="_method", value="DELETE")
+    button.btn.btn-link.text-danger(type="submit") Delete
+
+  //- br
+  //- h3 Comments
+  //- each comment, index in owner.comments
+  //-   div(class=`py-3 ${index && 'border-top'}`)
+  //-     include ../comments/comment
+  //- include ../comments/form

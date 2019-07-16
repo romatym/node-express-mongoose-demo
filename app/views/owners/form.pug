@@ -1,0 +1,49 @@
+extends ../layouts/default
+
+block main
+  h1= title
+
+block content
+  - var action = '/owners'
+  - action += owner.isNew? '' : '/' + owner.id
+
+  .row
+    .col-md-8
+      form(method="post", action=action, enctype="multipart/form-data", role="form")
+
+        input(type="hidden", name="_csrf", value=csrf_token)
+
+        - if (!owner.isNew)
+          input(type="hidden", name="_method", value="PUT")
+
+        .form-group
+          label(for='name') Name
+          input.form-control#title(type='text', name="name", value=owner.name, placeholder='Enter the full name')
+
+        .form-group
+          label(for='phone') Phone
+          input.form-control#title(type='text', name="phone", value=owner.phone, placeholder='Enter the phone number')
+        
+        .form-group
+          label(for='email') Email
+          input.form-control#title(type='text', name="email", value=owner.email, placeholder='Enter the email')
+
+        .form-group
+          label(for='adress') Adress
+          input.form-control#title(type='text', name="adress", value=owner.adress, placeholder='Enter the adress')
+
+        .form-group
+          label(for='comment') Comment
+          textarea.form-control#desc(rows="5", name="comment", placeholder='Enter the comment')=owner.comment
+        
+        .form-group
+          label(for='file') Image
+          input.form-control-file#file(type='file', name="image")
+
+        button.btn.btn-primary(type='submit') Save
+        | &nbsp;
+        a.btn.btn-link(href='/owners', title="cancel") Cancel
+
+    .col-md-4
+      - if (!owner.isNew && owner.image && owner.image.files && owner.image.files.length)
+        img(src=owner.image.cdnUri + "/mini_" + owner.image.files[0])

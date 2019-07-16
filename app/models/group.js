@@ -14,16 +14,11 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 /**
- * Doctor Schema
+ * Group Schema
  */
 
-const DoctorSchema = new Schema({
+const GroupSchema = new Schema({
   name: { type: String, default: '', trim: true, maxlength: 150 },
-  phone: { type: String, default: '', trim: true, maxlength: 100 },
-  email: { type: String, default: '', trim: true, maxlength: 100 },
-  specialization: { type: String, default: '', trim: true, maxlength: 100 },
-  template: { type: String, default: '', trim: true, maxlength: 100 },
-  //template: { type: Schema.ObjectId, ref: 'Template' },
   comment: { type: String, default: '', trim: true, maxlength: 1000 },
   user: { type: Schema.ObjectId, ref: 'User' },
   // comments: [
@@ -40,26 +35,24 @@ const DoctorSchema = new Schema({
   createdAt: { type: Date, default: Date.now }
 });
 
-
 /**
  * Validations
  */
 
-DoctorSchema.path('name').required(true, 'Doctor Name cannot be blank');
-DoctorSchema.path('specialization').required(true, 'Doctor Specialization cannot be blank');
+GroupSchema.path('name').required(true, 'Group Name cannot be blank');
 
 /**
  * Pre-remove hook
  */
 
-DoctorSchema.pre('remove', function(next) {
+GroupSchema.pre('remove', function(next) {
   const imager = new Imager(imagerConfig, 'S3');
   const files = this.image.files;
 
   //if there are files associated with the item, remove from the cloud too
   imager.remove(files, function (err) {
     if (err) return next(err);
-  }, 'Doctor');
+  }, 'Group');
 
   next();
 });
@@ -68,9 +61,9 @@ DoctorSchema.pre('remove', function(next) {
  * Methods
  */
 
-DoctorSchema.methods = {
+GroupSchema.methods = {
   /**
-   * Save Doctor and upload image
+   * Save Group and upload image
    *
    * @param {Object} images
    * @api private
@@ -91,7 +84,7 @@ DoctorSchema.methods = {
         self.image = { cdnUri : cdnUri, files : files };
       }
       self.save(cb);
-    }, 'Doctor');
+    }, 'Group');
     */
   }
 
@@ -101,9 +94,9 @@ DoctorSchema.methods = {
  * Statics
  */
 
-DoctorSchema.statics = {
+GroupSchema.statics = {
   /**
-   * Find Doctor by id
+   * Find Group by id
    *
    * @param {ObjectId} id
    * @api private
@@ -116,7 +109,7 @@ DoctorSchema.statics = {
   },
 
   /**
-   * List doctors
+   * List groups
    *
    * @param {Object} options
    * @api private
@@ -135,7 +128,4 @@ DoctorSchema.statics = {
   }
 };
 
-module.exports = mongoose.model('Doctor', DoctorSchema);
-
-//const DoctorSchema = mongoose.models.DoctorSchema || mongoose.model('Doctor', DoctorSchema);
-//module.exports = mongoose.model('Doctor', DoctorSchema);
+mongoose.model('Group', GroupSchema);

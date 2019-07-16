@@ -1,0 +1,17 @@
+extends ../layouts/default
+
+block main
+  h1= title
+
+block content
+  - if (groups.length)
+    each group, index in groups
+      div(class=`py-4 ${index && 'border-top'}`)
+        include group
+
+    - if (pages > 1)
+      ul.pagination
+        != createPagination(pages, page, 'page-item', 'page-link')
+  - else
+    h4.text-muted No groups.&nbsp;
+      a(href="/groups/new") create one

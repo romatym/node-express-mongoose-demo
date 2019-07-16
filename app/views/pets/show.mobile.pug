@@ -1,0 +1,41 @@
+extends ../layouts/default
+
+block main
+  h1= pet.name.slice(0, 400)
+
+block content
+  .row
+    .col-md-8
+      p=pet.specialization.slice(0, 1000)
+      .meta
+        - if (pet.user)
+          - var name = pet.user.name ? pet.user.name : pet.user.username
+          p Author :&nbsp;
+            a(href="/users/"+pet.user._id)= name
+
+        //- - if (pet.tags)
+        //-   p Tags &nbsp;
+        //-     each tag in pet.tags.split(',').slice(0, 10)
+        //-       i.text-muted.fa.fa-tag &nbsp;
+        //-       a.tag(href="/tags/"+tag)= tag
+        //-       | &nbsp;&nbsp;
+
+        p.text-muted= formatDate(pet.createdAt, "%b %d, %Y at %I:%M %p")
+
+    .col-md-4
+      - if (!pet.isNew && pet.image && pet.image.files && pet.image.files.length)
+        img(src=pet.image.cdnUri + '/mini_' + pet.image.files[0])
+
+  form(action="/pets/"+pet.id, method="post", onsubmit="return confirm('Are you sure?')")
+    input(type='hidden', name='_csrf', value=csrf_token)
+    a.btn.btn-outline-primary(href='/pets/'+pet._id+'/edit', title="edit") Edit
+    | &nbsp;
+    input(type="hidden", name="_method", value="DELETE")
+    button.btn.btn-link.text-danger(type="submit") Delete
+
+  //- br
+  //- h3 Comments
+  //- each comment, index in pet.comments
+  //-   div(class=`py-3 ${index && 'border-top'}`)
+  //-     include ../comments/comment
+  //- include ../comments/form

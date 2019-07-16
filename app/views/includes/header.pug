@@ -12,8 +12,16 @@ nav.navbar.navbar-expand-md.navbar-dark.fixed-top.bg-dark
       //-   a.nav-link(href="/templates/new", title="templates") +template
       li(class=isActive('/doctors') ? 'active nav-item' : 'nav-item')
         a.nav-link(href="/doctors", title="doctors") Doctors
+      li(class=isActive('/owners') ? 'active nav-item' : 'nav-item')
+        a.nav-link(href="/owners", title="owners") Owners
+      li(class=isActive('/pets') ? 'active nav-item' : 'nav-item')
+        a.nav-link(href="/pets", title="pets") Pets
+      li(class=isActive('/groups') ? 'active nav-item' : 'nav-item')
+        a.nav-link(href="/groups", title="groups") Groups
       li(class=isActive('/appointments') ? 'active nav-item' : 'nav-item')
         a.nav-link(href="/appointments", title="appointments") Appointments
+      li(class=isActive('/surveys') ? 'active nav-item' : 'nav-item')
+        a.nav-link(href="/surveys", title="surveys") Surveys
       - if (req.isAuthenticated())
         li.nav-item(class=isActive(`/users/${req.user.id}`) && 'active')
           a.nav-link(href="/users/"+req.user.id, title="Profile") Profile

@@ -63,7 +63,6 @@ exports.new = async(function* (req, res) {
   res.render('appointments/new', {
     title: 'New Appointment',
     appointment: newAppointment,
-    //doctors: doctorsList,
     datetime: new Date().toISOString().slice(0, 16)
   });
 });
@@ -75,7 +74,6 @@ exports.new = async(function* (req, res) {
 exports.create = async(function* (req, res) {
   const appointment = new Appointment(only(req.body, 'name phone email doctor comment comments tags'));
   appointment.user = req.user;
-  //const doctorsList = yield Appointment.fillDoctors();
 
   try {
     yield appointment.uploadAndSave(req.file);
@@ -114,13 +112,12 @@ exports.edit = async(function* (req, res) {
 
 exports.update = async(function* (req, res) {
   const appointment = req.appointment;
-  const aaa = retProp(req.body, 'name phone email doctor datetime comment');
+  
+  assign(appointment, retProp(req.body, 'name phone email doctor datetime comment'));
 
   const doctorsList = yield Appointment.fillDoctors();
-  appointment.doctors = doctorsList.slice(0);
-
-  assign(appointment, aaa);
-  //appointment.doctor = doctorsList.find(obj => { return obj.name === req.body.doctor }).id;
+  //appointment.doctors = doctorsList.slice(0);
+  appointment.doctor = doctorsList.find(obj => { return obj.name === req.body.doctor });
 
   try {
     appointment.uploadAndSave(req.file);

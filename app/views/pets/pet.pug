@@ -1,0 +1,26 @@
+pet.pet
+  h3
+    a(href='/pets/'+pet._id, title=pet.type) #{pet.name.slice(0, 150)}
+  p= pet.type.slice(0, 100)
+  p= pet.owner.name
+  p= pet.breed.slice(0, 100)
+  p= pet.comment.slice(0, 1000)
+
+  .meta
+    span.text-muted= formatDate(pet.createdAt)
+
+    - if (pet.user)
+      | &nbsp; - &nbsp;
+      span Author &nbsp;
+
+      - var name = pet.user.name ? pet.user.name : pet.user.username
+
+      a(href="/users/"+pet.user._id)= name
+
+    //- - if (article.tags)
+    //-   | &nbsp; - &nbsp;
+    //-   span Tags &nbsp;
+    //-   each tag in article.tags.split(',').slice(0, 10)
+    //-     i.text-muted.fa.fa-tag &nbsp;
+    //-     a.tag(href="/tags/"+tag)= tag
+    //-     | &nbsp;&nbsp;

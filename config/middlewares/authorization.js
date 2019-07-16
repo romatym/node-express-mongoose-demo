@@ -67,6 +67,46 @@ exports.doctor = {
 };
 
 /*
+ *  Pet authorization routing middleware
+ */
+
+exports.pet = {
+  hasAuthorization: function(req, res, next) {
+    if (req.pet.user.id != req.user.id) {
+      req.flash('info', 'You are not authorized');
+      return res.redirect('/pets/' + req.pet.id);
+    }
+    next();
+  }
+};
+/*
+ *  owner authorization routing middleware
+ */
+
+exports.owner = {
+  hasAuthorization: function(req, res, next) {
+    if (req.owner.user.id != req.user.id) {
+      req.flash('info', 'You are not authorized');
+      return res.redirect('/owners/' + req.owner.id);
+    }
+    next();
+  }
+};
+/*
+ *  group authorization routing middleware
+ */
+
+exports.group = {
+  hasAuthorization: function(req, res, next) {
+    if (req.group.user.id != req.user.id) {
+      req.flash('info', 'You are not authorized');
+      return res.redirect('/groups/' + req.group.id);
+    }
+    next();
+  }
+};
+
+/*
  *  appointments authorization routing middleware
  */
 
@@ -75,6 +115,20 @@ exports.appointment = {
     if (req.appointment.user.id != req.user.id) {
       req.flash('info', 'You are not authorized');
       return res.redirect('/appointments/' + req.appointment.id);
+    }
+    next();
+  }
+};
+
+/*
+ *  appointments authorization routing middleware
+ */
+
+exports.survey = {
+  hasAuthorization: function(req, res, next) {
+    if (req.survey.user.id != req.user.id) {
+      req.flash('info', 'You are not authorized');
+      return res.redirect('/surveys/' + req.survey.id);
     }
     next();
   }

@@ -6,7 +6,7 @@ block main
 block content
   .row
     .col-md-8
-      p=appointment.doctor.slice(0, 1000)
+      p=appointment.doctor.name
       .meta
         - if (appointment.user)
           - var name = appointment.user.name ? appointment.user.name : appointment.user.username

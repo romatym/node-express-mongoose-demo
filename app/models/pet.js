@@ -12,20 +12,23 @@ const mongoose = require('mongoose');
 // const imagerConfig = require(config.root + '/config/imager.js');
 
 const Schema = mongoose.Schema;
+//var surveySchema = new Schema({ name: 'string' });
 
 /**
- * Doctor Schema
+ * Pet Schema
  */
+const OwnerSchema = mongoose.model('Owner').schema;
 
-const DoctorSchema = new Schema({
+const PetSchema = new Schema({
+  type: { type: String, default: '', trim: true, maxlength: 100 },
   name: { type: String, default: '', trim: true, maxlength: 150 },
-  phone: { type: String, default: '', trim: true, maxlength: 100 },
-  email: { type: String, default: '', trim: true, maxlength: 100 },
-  specialization: { type: String, default: '', trim: true, maxlength: 100 },
-  template: { type: String, default: '', trim: true, maxlength: 100 },
-  //template: { type: Schema.ObjectId, ref: 'Template' },
+  sex: { type: String, default: '', trim: true, maxlength: 100 },
+  breed: { type: String, default: '', trim: true, maxlength: 100 },
+  //owner: { type: String, default: '', trim: true, maxlength: 100 },
+  owner: OwnerSchema,
   comment: { type: String, default: '', trim: true, maxlength: 1000 },
   user: { type: Schema.ObjectId, ref: 'User' },
+  // surveys: [ surveySchema ],
   // comments: [
   //   {
   //     body: { type: String, default: '', maxlength: 1000 },
@@ -40,26 +43,25 @@ const DoctorSchema = new Schema({
   createdAt: { type: Date, default: Date.now }
 });
 
-
 /**
  * Validations
  */
 
-DoctorSchema.path('name').required(true, 'Doctor Name cannot be blank');
-DoctorSchema.path('specialization').required(true, 'Doctor Specialization cannot be blank');
+PetSchema.path('type').required(true, 'type cannot be blank');
+PetSchema.path('owner').required(true, 'owner cannot be blank');
 
 /**
  * Pre-remove hook
  */
 
-DoctorSchema.pre('remove', function(next) {
+PetSchema.pre('remove', function(next) {
   const imager = new Imager(imagerConfig, 'S3');
   const files = this.image.files;
 
   //if there are files associated with the item, remove from the cloud too
   imager.remove(files, function (err) {
     if (err) return next(err);
-  }, 'Doctor');
+  }, 'Pet');
 
   next();
 });
@@ -68,9 +70,9 @@ DoctorSchema.pre('remove', function(next) {
  * Methods
  */
 
-DoctorSchema.methods = {
+PetSchema.methods = {
   /**
-   * Save Doctor and upload image
+   * Save Pet and upload image
    *
    * @param {Object} images
    * @api private
@@ -91,7 +93,7 @@ DoctorSchema.methods = {
         self.image = { cdnUri : cdnUri, files : files };
       }
       self.save(cb);
-    }, 'Doctor');
+    }, 'Pet');
     */
   }
 
@@ -101,9 +103,9 @@ DoctorSchema.methods = {
  * Statics
  */
 
-DoctorSchema.statics = {
+PetSchema.statics = {
   /**
-   * Find Doctor by id
+   * Find Pet by id
    *
    * @param {ObjectId} id
    * @api private
@@ -116,7 +118,7 @@ DoctorSchema.statics = {
   },
 
   /**
-   * List doctors
+   * List pets
    *
    * @param {Object} options
    * @api private
@@ -132,10 +134,18 @@ DoctorSchema.statics = {
       .limit(limit)
       .skip(limit * page)
       .exec();
+  },
+
+  fillOwners: function() {
+    //console.log("111");
+    var Owner = mongoose.model('Owner');
+    // Doctor.find({}, 'name specialization _id', function (err, doctorsList) {
+    //   if (err) return handleError(err);
+    //   obj.doctors = doctorsList.slice(0);
+    // });
+    return Owner.find({}, 'name phone _id')
+      .exec();
   }
 };
 
-module.exports = mongoose.model('Doctor', DoctorSchema);
-
-//const DoctorSchema = mongoose.models.DoctorSchema || mongoose.model('Doctor', DoctorSchema);
-//module.exports = mongoose.model('Doctor', DoctorSchema);
+module.exports = mongoose.model('Pet', PetSchema);

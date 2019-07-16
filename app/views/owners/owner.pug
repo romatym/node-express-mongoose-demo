@@ -1,0 +1,25 @@
+owner.owner
+  h3
+    a(href='/owners/'+owner._id, title=owner.name) #{owner.name.slice(0, 150)}
+  p= owner.phone.slice(0, 100)
+  p= owner.email.slice(0, 100)
+  p= owner.comment.slice(0, 1000)
+
+  .meta
+    span.text-muted= formatDate(owner.createdAt)
+
+    - if (owner.user)
+      | &nbsp; - &nbsp;
+      span Author &nbsp;
+
+      - var name = owner.user.name ? owner.user.name : owner.user.username
+
+      a(href="/users/"+owner.user._id)= name
+
+    //- - if (article.tags)
+    //-   | &nbsp; - &nbsp;
+    //-   span Tags &nbsp;
+    //-   each tag in article.tags.split(',').slice(0, 10)
+    //-     i.text-muted.fa.fa-tag &nbsp;
+    //-     a.tag(href="/tags/"+tag)= tag
+    //-     | &nbsp;&nbsp;

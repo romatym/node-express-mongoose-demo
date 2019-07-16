@@ -1,0 +1,53 @@
+extends ../layouts/default
+
+block main
+  h1= title
+
+block content
+  - var action = '/pets'
+  - action += pet.isNew? '' : '/' + pet.id
+
+  .row
+    .col-md-8
+      form(method="post", action=action, enctype="multipart/form-data", role="form")
+
+        input(type="hidden", name="_csrf", value=csrf_token)
+
+        - if (!pet.isNew)
+          input(type="hidden", name="_method", value="PUT")
+
+        .form-group
+          label(for='type') Type
+          input.form-control#type(type='text', name="type", value=pet.type, placeholder='Enter the type')
+
+        .form-group
+          label(for='name') Name
+          input.form-control#name(type='text', name="name", value=pet.name, placeholder='Enter the full name')
+
+        .form-group
+          label(for='owner') owner
+          input.form-control#Owner(type='text', name="owner", value=pet.owner.name, placeholder='Enter the owner')        
+
+        .form-group
+          label(for='sex') Sex
+          input.form-control#Sex(type='text', name="sex", value=pet.sex, placeholder='Enter the Sex')
+        
+        .form-group
+          label(for='breed') Breed
+          input.form-control#Breed(type='text', name="breed", value=pet.breed, placeholder='Enter the Breed')
+        
+        .form-group
+          label(for='comment') Comment
+          textarea.form-control#desc(rows="5", name="comment", placeholder='Enter the comment')=pet.comment
+        
+        .form-group
+          label(for='file') Image
+          input.form-control-file#file(type='file', name="image")
+
+        button.btn.btn-primary(type='submit') Save
+        | &nbsp;
+        a.btn.btn-link(href='/pets', title="cancel") Cancel
+
+    .col-md-4
+      - if (!pet.isNew && pet.image && pet.image.files && pet.image.files.length)
+        img(src=pet.image.cdnUri + "/mini_" + pet.image.files[0])

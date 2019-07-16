@@ -1,0 +1,23 @@
+survey.survey
+  h3
+    a(href='/surveys/'+survey._id, title=survey.title) #{survey.title.slice(0, 140)}
+  p= survey.body.slice(0, 400)
+
+  .meta
+    span.text-muted= formatDate(survey.createdAt)
+
+    - if (survey.user)
+      | &nbsp; - &nbsp;
+      span Author &nbsp;
+
+      - var name = survey.user.name ? survey.user.name : survey.user.username
+
+      a(href="/users/"+survey.user._id)= name
+
+    - if (survey.tags)
+      | &nbsp; - &nbsp;
+      span Tags &nbsp;
+      each tag in survey.tags.split(',').slice(0, 10)
+        i.text-muted.fa.fa-tag &nbsp;
+        a.tag(href="/tags/"+tag)= tag
+        | &nbsp;&nbsp;

@@ -8,6 +8,13 @@ const users = require('../app/controllers/users');
 const articles = require('../app/controllers/articles');
 const templates = require('../app/controllers/templates');
 const doctors = require('../app/controllers/doctors');
+
+const pets = require('../app/controllers/pets');
+const owners = require('../app/controllers/owners');
+const groups = require('../app/controllers/groups');
+
+const surveys = require('../app/controllers/surveys');
+
 const appointments = require('../app/controllers/appointments');
 const common = require('../app/controllers/common');
 const comments = require('../app/controllers/comments');
@@ -21,6 +28,13 @@ const auth = require('./middlewares/authorization');
 const articleAuth = [auth.requiresLogin, auth.article.hasAuthorization];
 const templateAuth = [auth.requiresLogin, auth.template.hasAuthorization];
 const doctorAuth = [auth.requiresLogin, auth.doctor.hasAuthorization];
+
+const petAuth = [auth.requiresLogin, auth.pet.hasAuthorization];
+const ownerAuth = [auth.requiresLogin, auth.owner.hasAuthorization];
+const groupAuth = [auth.requiresLogin, auth.group.hasAuthorization];
+
+const surveyAuth = [auth.requiresLogin, auth.survey.hasAuthorization];
+
 const appointmentAuth = [auth.requiresLogin, auth.appointment.hasAuthorization];
 const commentAuth = [auth.requiresLogin, auth.comment.hasAuthorization];
 
@@ -114,6 +128,50 @@ module.exports = function(app, passport) {
   //app.get('/doctors/:id/edit', doctors.edit);
   app.put('/doctors/:id', doctorAuth, doctors.update);
   app.delete('/doctors/:id', doctorAuth, doctors.destroy);
+
+  // owners routes
+  //app.param('id', templates.load);
+  app.get('/owners', owners.index);
+  app.get('/owners/new', auth.requiresLogin, owners.new);
+  app.post('/owners', auth.requiresLogin, owners.create);
+  app.get('/owners/:id', owners.show);
+  app.get('/owners/:id/edit', ownerAuth, owners.edit);
+  //app.get('/owners/:id/edit', owners.edit);
+  app.put('/owners/:id', ownerAuth, owners.update);
+  app.delete('/owners/:id', ownerAuth, owners.destroy);
+
+  // pets routes
+  //app.param('id', templates.load);
+  app.get('/pets', pets.index);
+  app.get('/pets/new', auth.requiresLogin, pets.new);
+  app.post('/pets', auth.requiresLogin, pets.create);
+  app.get('/pets/:id', pets.show);
+  app.get('/pets/:id/edit', petAuth, pets.edit);
+  //app.get('/pets/:id/edit', pets.edit);
+  app.put('/pets/:id', petAuth, pets.update);
+  app.delete('/pets/:id', petAuth, pets.destroy);
+
+  // groups routes
+  //app.param('id', templates.load);
+  app.get('/groups', groups.index);
+  app.get('/groups/new', auth.requiresLogin, groups.new);
+  app.post('/groups', auth.requiresLogin, groups.create);
+  app.get('/groups/:id', groups.show);
+  app.get('/groups/:id/edit', groupAuth, groups.edit);
+  //app.get('/groups/:id/edit', groups.edit);
+  app.put('/groups/:id', groupAuth, groups.update);
+  app.delete('/groups/:id', groupAuth, groups.destroy);
+
+  // surveys routes
+  //app.param('id', templates.load);
+  app.get('/surveys', surveys.index);
+  app.get('/surveys/new', auth.requiresLogin, surveys.new);
+  app.post('/surveys', auth.requiresLogin, surveys.create);
+  app.get('/surveys/:id', surveys.show);
+  app.get('/surveys/:id/edit', surveyAuth, surveys.edit);
+  //app.get('/surveys/:id/edit', surveys.edit);
+  app.put('/surveys/:id', surveyAuth, surveys.update);
+  app.delete('/surveys/:id', surveyAuth, surveys.destroy);
 
   // appointments routes
   //app.param('id', templates.load);

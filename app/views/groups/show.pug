@@ -1,0 +1,34 @@
+extends ../layouts/default
+
+block main
+  h1= group.name.slice(0, 150)
+
+block content
+  .row
+    .col-md-8
+      p=group.comment.slice(0, 200)
+      .meta
+        - if (group.user)
+          - var name = group.user.name ? group.user.name : group.user.username
+          p Author :&nbsp;
+            a(href="/users/"+group.user._id)= name
+
+        p.text-muted= formatDate(group.createdAt, "%b %d, %Y at %I:%M %p")
+
+    .col-md-4
+      - if (!group.isNew && group.image && group.image.files && group.image.files.length)
+        img(src=group.image.cdnUri + '/mini_' + group.image.files[0])
+
+  form(action="/groups/"+group.id, method="post", onsubmit="return confirm('Are you sure?')")
+    input(type='hidden', name='_csrf', value=csrf_token)
+    a.btn.btn-outline-primary(href='/groups/'+group._id+'/edit', title="edit") Edit
+    | &nbsp;
+    input(type="hidden", name="_method", value="DELETE")
+    button.btn.btn-link.text-danger(type="submit") Delete
+
+  //- br
+  //- h3 Comments
+  //- each comment, index in group.comments
+  //-   div(class=`py-3 ${index && 'border-top'}`)
+  //-     include ../comments/comment
+  //- include ../comments/form
