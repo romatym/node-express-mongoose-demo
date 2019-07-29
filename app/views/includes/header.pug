@@ -20,8 +20,8 @@ nav.navbar.navbar-expand-md.navbar-dark.fixed-top.bg-dark
         a.nav-link(href="/groups", title="groups") Groups
       li(class=isActive('/appointments') ? 'active nav-item' : 'nav-item')
         a.nav-link(href="/appointments", title="appointments") Appointments
-      li(class=isActive('/surveys') ? 'active nav-item' : 'nav-item')
-        a.nav-link(href="/surveys", title="surveys") Surveys
+      //- li(class=isActive('/surveys') ? 'active nav-item' : 'nav-item')
+      //-   a.nav-link(href="/surveys", title="surveys") Surveys
       - if (req.isAuthenticated())
         li.nav-item(class=isActive(`/users/${req.user.id}`) && 'active')
           a.nav-link(href="/users/"+req.user.id, title="Profile") Profile

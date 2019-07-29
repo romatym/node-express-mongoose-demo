@@ -59,6 +59,8 @@ exports.new = async(function* (req, res) {
   var newAppointment = new Appointment();
   const doctorsList = yield Appointment.fillDoctors();
   newAppointment.doctors = doctorsList.slice(0);
+  const petsList = yield Appointment.fillPets();
+  newAppointment.pets = petsList.slice(0);
 
   res.render('appointments/new', {
     title: 'New Appointment',
@@ -96,11 +98,12 @@ exports.edit = async(function* (req, res) {
 
   const doctorsList = yield Appointment.fillDoctors();
   req.appointment.doctors = doctorsList.slice(0);
+  const petsList = yield Appointment.fillPets();
+  req.appointment.pets = petsList.slice(0);
 
   res.render('appointments/edit', {
     title: 'Edit ' + req.appointment.name,
     appointment: req.appointment,
-    doctors: doctorsList,
     datetime: req.appointment.datetime.toISOString().slice(0, 16)
   });
 
@@ -113,11 +116,13 @@ exports.edit = async(function* (req, res) {
 exports.update = async(function* (req, res) {
   const appointment = req.appointment;
   
-  assign(appointment, retProp(req.body, 'name phone email doctor datetime comment'));
+  assign(appointment, retProp(req.body, 'name phone email pet doctor datetime comment'));
 
   const doctorsList = yield Appointment.fillDoctors();
-  //appointment.doctors = doctorsList.slice(0);
+  const petsList = yield Appointment.fillPets();
   appointment.doctor = doctorsList.find(obj => { return obj.name === req.body.doctor });
+  const petObj = petsList.find(obj => { return obj.name === req.body.pet });
+  appointment.pet = { name: petObj.name, id: petObj._id };
 
   try {
     appointment.uploadAndSave(req.file);

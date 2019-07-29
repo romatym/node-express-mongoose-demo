@@ -25,19 +25,33 @@ block content
           input.form-control#phone(type='text', name="phone", value=appointment.phone, placeholder='Enter the phone')
 
         .form-group
-          label(for='email') Name
+          label(for='email') email
           input.form-control#email(type='text', name="email", value=appointment.email, placeholder='Enter the email')
 
         .form-group
-          label(for='doctor') Doctor
-          p
-          //- select(name='doctor')
-          input.form-control#doctor(type='text', name="doctor", list='doctor_list', value=appointment.doctor, placeholder='Choose the doctor')          
-          //- input.form-control#doctorid(type='hidden', name="doctorid", value=selection == 'appointment.doctor.id')
-          datalist#doctor_list
-            each item in appointment.doctors
-              option(value=item.name data-value=item.id)=item.specialization
+          label(for='pet') Pet
+        - if (appointment.pet)
+            input.form-control#pet(type='text', name="pet", list='pet_list', value=appointment.pet.name, placeholder='Pet')
+            datalist#pet_list
+              each item in appointment.pets
+                option(value=item.name data-value=item.id)=item.type
+        - else
+            input.form-control#pet(type='text', name="pet", placeholder='Choose a pet')
+            datalist#pet_list
+              each item in appointment.pets
+                option(value=item.name data-value=item.id)=item.type
 
+        .form-group
+          label(for='doctor') Doctor
+          //- input.form-control#doctor(type='text', name="doctor", list='doctor_list', value=appointment.doctor, placeholder='Choose the doctor')
+        - if (appointment.doctor)
+            input.form-control#doctor(type='text', name="doctor", list='doctor_list', value=appointment.doctor.name, placeholder='Choose the doctor')
+            datalist#doctor_list
+              each item in appointment.doctors
+                option(value=item.name data-value=item.id)=item.specialization
+        - else
+            input.form-control#doctor(type='text', name="doctor", list='doctor_list', placeholder='Choose the doctor')
+        
         .form-group
           label(for='datetime') datetime
           input.form-control#datetime(type='datetime-local', name="datetime", value=datetime placeholder='Choose date&time' step="300")

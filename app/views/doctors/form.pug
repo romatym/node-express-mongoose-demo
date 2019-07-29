@@ -38,7 +38,17 @@ block content
         
         .form-group
           label(for='template') Worksheet template
-          input.form-control#title(type='text', name="template", value=doctor.template, placeholder='Enter the phone number')
+          //- input.form-control#title(type='text', name="template", value=doctor.template, placeholder='Enter the template')
+          - if (doctor.template)
+              input.form-control#template(type='text', name="template", list='templates_list', value=doctor.template.name, placeholder='template')
+              //- datalist#templates_list
+              //-   each item in doctor.templates
+              //-     option(value=item.title data-value=item.id)=item.title
+          - else
+              input.form-control#template(type='text', name="template", placeholder='Choose a template')
+          datalist#templates_list
+            each item in doctor.templates
+              option(value=item.title data-value=item.id)=item.title
 
         .form-group
           label(for='file') Image

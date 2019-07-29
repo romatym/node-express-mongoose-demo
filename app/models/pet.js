@@ -18,6 +18,7 @@ const Schema = mongoose.Schema;
  * Pet Schema
  */
 const OwnerSchema = mongoose.model('Owner').schema;
+const SurveySchema = mongoose.model('Survey').schema;
 
 const PetSchema = new Schema({
   type: { type: String, default: '', trim: true, maxlength: 100 },
@@ -28,7 +29,7 @@ const PetSchema = new Schema({
   owner: OwnerSchema,
   comment: { type: String, default: '', trim: true, maxlength: 1000 },
   user: { type: Schema.ObjectId, ref: 'User' },
-  // surveys: [ surveySchema ],
+  surveys: [ SurveySchema ],
   // comments: [
   //   {
   //     body: { type: String, default: '', maxlength: 1000 },

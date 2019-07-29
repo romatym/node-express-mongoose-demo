@@ -23,6 +23,7 @@ const app = express();
 
 module.exports = app;
 
+require('./app/models/survey');
 require('./app/models/doctor');
 require('./app/models/owner');
 

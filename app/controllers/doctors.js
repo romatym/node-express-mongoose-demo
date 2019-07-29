@@ -54,12 +54,17 @@ exports.index = async(function* (req, res) {
  * New doctor
  */
 
-exports.new = function (req, res) {
+exports.new = async(function* (req, res) {
+  
+  var newDoctor = new Doctor();
+  const templatesList = yield Doctor.fillTemplates();
+  newDoctor.templates = templatesList.slice(0);
+
   res.render('doctors/new', {
     title: 'New Doctor',
-    doctor: new Doctor()
+    doctor: newDoctor
   });
-};
+});
 
 /**
  * Create an doctor
@@ -85,12 +90,16 @@ exports.create = async(function* (req, res) {
  * Edit a doctor
  */
 
-exports.edit = function (req, res) {
+exports.edit = async(function* (req, res) {
+  
+  const templatesList = yield Doctor.fillTemplates();
+  req.doctor.templates = templatesList.slice(0);
+  
   res.render('doctors/edit', {
     title: 'Edit ' + req.doctor.name,
     doctor: req.doctor
   });
-};
+});
 
 /**
  * Update doctor
@@ -98,18 +107,21 @@ exports.edit = function (req, res) {
 
 exports.update = async(function* (req, res) {
   const doctor = req.doctor;
-  const aaa = only(req.body, 'name phone email specialization template comment');
-  doctor.user = req.user;
   //const aaa = retProp(req.body, 'name phone email specialization template comment');
+  assign(doctor, only(req.body, 'name phone email specialization comment'));
 
-  assign(doctor, aaa);
+  const templatesList = yield Doctor.fillTemplates();
+  const templateObj = templatesList.find(obj => { return obj.title === req.body.template; });
+  doctor.template = { name: templateObj.title, id: templateObj._id };
+
+  doctor.user = req.user;
 
   try {
     yield doctor.uploadAndSave(req.file);
     res.redirect(`/doctors/${doctor._id}`);
   } catch (err) {
     res.status(422).render('doctors/edit', {
-      title: 'Edit ' + doctorname,
+      title: 'Edit ' + doctor.name,
       errors: [err.toString()],
       doctor
     });

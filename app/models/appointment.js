@@ -6,9 +6,6 @@
 
 const mongoose = require('mongoose');
 const notify = require('../mailer');
-//module.exports
-//var Cat = require('./Doctor');
-//const DoctorSchema = mongoose.models.DoctorSchema || mongoose.model('Doctor');
 
 // const Imager = require('imager');
 // const config = require('../../config');
@@ -23,16 +20,18 @@ const setTags = tags => tags.split(',').slice(0, 10); // max tags
  * Appointment Schema
  */
 
-console.log('12345');
-
 const DoctorSchema = mongoose.model('Doctor').schema;
 
 const AppointmentSchema = new Schema({
   name: { type: String, default: '', trim: true, maxlength: 150 },
   phone: { type: String, default: '', trim: true, maxlength: 100 },
   email: { type: String, default: '', trim: true, maxlength: 100 },
+  pet: { 
+    name: { type: String, default: '', trim: true, maxlength: 100 },
+    id: { type: Schema.ObjectId, ref: 'Pet' },
+  },
+  // petid: { type: Schema.ObjectId, ref: 'Pet' },
   //doctor: { type: String, default: '', trim: true, maxlength: 100 },
-  //doctor: { type: Schema.ObjectId, ref: 'Doctor' },
   doctor: DoctorSchema,
   datetime: { type: Date, default: Date.now },
   comment: { type: String, default: '', trim: true, maxlength: 1000 },
@@ -207,6 +206,12 @@ AppointmentSchema.statics = {
     //   obj.doctors = doctorsList.slice(0);
     // });
     return Doctor.find({}, 'name specialization _id')
+      .exec();
+  },
+
+  fillPets: function() {
+    var Pet = mongoose.model('Pet');
+    return Pet.find({}, 'name type _id')
       .exec();
   }
 

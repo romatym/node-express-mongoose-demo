@@ -22,7 +22,26 @@ const setTags = tags => tags.split(',').slice(0, 10); // max tags
 
 const SurveySchema = new Schema({
   title: { type: String, default: '', trim: true, maxlength: 400 },
+  owner: { 
+    name: { type: String, default: '', trim: true, maxlength: 100 },
+    id: { type: Schema.ObjectId, ref: 'Owner' },
+  },
+  pet: { 
+    name: { type: String, default: '', trim: true, maxlength: 100 },
+    id: { type: Schema.ObjectId, ref: 'Pet' },
+  },
+  doctor: { 
+    name: { type: String, default: '', trim: true, maxlength: 100 },
+    id: { type: Schema.ObjectId, ref: 'Doctor' },
+  },
+  datetime: { type: Date, default: Date.now },
   body: { type: String, default: '', trim: true, maxlength: 1000 },
+  questions: [
+    {
+      question: { type: String, default: '', maxlength: 1000 },
+      answer: { type: String, default: '', maxlength: 1000 }
+    }
+  ],
   user: { type: Schema.ObjectId, ref: 'User' },
   comments: [
     {

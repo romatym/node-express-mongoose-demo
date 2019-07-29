@@ -16,13 +16,18 @@ const Schema = mongoose.Schema;
 /**
  * Doctor Schema
  */
+// const TemplateSchema = mongoose.model('Template').schema;
 
 const DoctorSchema = new Schema({
   name: { type: String, default: '', trim: true, maxlength: 150 },
   phone: { type: String, default: '', trim: true, maxlength: 100 },
   email: { type: String, default: '', trim: true, maxlength: 100 },
   specialization: { type: String, default: '', trim: true, maxlength: 100 },
-  template: { type: String, default: '', trim: true, maxlength: 100 },
+  //template: { type: String, default: '', trim: true, maxlength: 100 },
+  template: { 
+    name: { type: String, default: '', trim: true, maxlength: 100 },
+    id: { type: Schema.ObjectId, ref: 'Template' },
+  },
   //template: { type: Schema.ObjectId, ref: 'Template' },
   comment: { type: String, default: '', trim: true, maxlength: 1000 },
   user: { type: Schema.ObjectId, ref: 'User' },
@@ -132,7 +137,18 @@ DoctorSchema.statics = {
       .limit(limit)
       .skip(limit * page)
       .exec();
+  },
+
+  fillTemplates: function() {
+    var Template = mongoose.model('Template');
+    // Doctor.find({}, 'name specialization _id', function (err, doctorsList) {
+    //   if (err) return handleError(err);
+    //   obj.doctors = doctorsList.slice(0);
+    // });
+    return Template.find({}, 'title _id')
+      .exec();
   }
+
 };
 
 module.exports = mongoose.model('Doctor', DoctorSchema);
