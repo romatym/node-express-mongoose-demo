@@ -217,4 +217,4 @@ AppointmentSchema.statics = {
 
 };
 
-mongoose.model('Appointment', AppointmentSchema);
+module.exports = mongoose.model('Appointment', AppointmentSchema);

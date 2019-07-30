@@ -192,4 +192,4 @@ SurveySchema.statics = {
   }
 };
 
-mongoose.model('Survey', SurveySchema);
+module.exports = mongoose.model('Survey', SurveySchema);

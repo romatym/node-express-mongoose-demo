@@ -9,12 +9,13 @@ const { wrap: async } = require('co');
 const only = require('only');
 const Survey = mongoose.model('Survey');
 const assign = Object.assign;
-
+//const common = require('../app/controllers/common');
+const common = require('./common');
 /**
  * Load
  */
 
-exports.load = async(function*(req, res, next, id) {
+exports.load = async(function* (req, res, next, id) {
   try {
     req.survey = yield Survey.load(id);
     if (!req.survey) return next(new Error('Survey not found'));
@@ -28,7 +29,7 @@ exports.load = async(function*(req, res, next, id) {
  * List
  */
 
-exports.index = async(function*(req, res) {
+exports.index = async(function* (req, res) {
   const page = (req.query.page > 0 ? req.query.page : 1) - 1;
   const _id = req.query.item;
   const limit = 15;
@@ -54,18 +55,24 @@ exports.index = async(function*(req, res) {
  * New survey
  */
 
-exports.new = function(req, res) {
+exports.new = async(function* (req, res) {
+
+  var newSurvey = new Survey();
+  newSurvey.ownersList = (yield common.ownersList()).slice(0);
+  newSurvey.petsList = (yield common.petsList()).slice(0);
+  newSurvey.doctorsList = (yield common.doctorsList()).slice(0);
+
   res.render('surveys/new', {
     title: 'New Survey',
-    survey: new Survey()
+    survey: newSurvey
   });
-};
+});
 
 /**
  * Create an survey
  */
 
-exports.create = async(function*(req, res) {
+exports.create = async(function* (req, res) {
   const survey = new Survey(only(req.body, 'title body tags'));
   survey.user = req.user;
   try {
@@ -85,7 +92,7 @@ exports.create = async(function*(req, res) {
  * Edit an survey
  */
 
-exports.edit = function(req, res) {
+exports.edit = function (req, res) {
   res.render('surveys/edit', {
     title: 'Edit ' + req.survey.title,
     survey: req.survey
@@ -96,7 +103,7 @@ exports.edit = function(req, res) {
  * Update survey
  */
 
-exports.update = async(function*(req, res) {
+exports.update = async(function* (req, res) {
   const survey = req.survey;
   assign(survey, only(req.body, 'title body tags'));
   try {
@@ -115,7 +122,7 @@ exports.update = async(function*(req, res) {
  * Show
  */
 
-exports.show = function(req, res) {
+exports.show = function (req, res) {
   res.render('surveys/show', {
     title: req.survey.title,
     survey: req.survey
@@ -126,7 +133,7 @@ exports.show = function(req, res) {
  * Delete an survey
  */
 
-exports.destroy = async(function*(req, res) {
+exports.destroy = async(function* (req, res) {
   yield req.survey.remove();
   req.flash('info', 'Deleted successfully');
   res.redirect('/surveys');

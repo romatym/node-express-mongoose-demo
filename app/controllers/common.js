@@ -2,15 +2,15 @@
 
 const mongoose = require('mongoose');
 const { wrap: async } = require('co');
-const Template = mongoose.model('Template');
-const Article = mongoose.model('Article');
-const Appointment = mongoose.model('Appointment');
-const Doctor = mongoose.model('Doctor');
+var Template = mongoose.model('Template');
+var Article = mongoose.model('Article');
+var Appointment = mongoose.model('Appointment');
+var Doctor = mongoose.model('Doctor');
 
-const Owner = mongoose.model('Owner');
-const Pet = mongoose.model('Pet');
-const Group = mongoose.model('Group');
-const Survey = mongoose.model('Survey');
+var Owner = mongoose.model('Owner');
+var Pet = mongoose.model('Pet');
+var Group = mongoose.model('Group');
+var Survey = mongoose.model('Survey');
 
 exports.loadByID = async(function* (req, res, next, id) {
 
@@ -52,5 +52,30 @@ exports.loadByID = async(function* (req, res, next, id) {
     }
 
     next();
-    
 });
+
+exports.appointmentsList = async(function* () {
+    return Appointment.find({}, 'name _id')
+      .exec();
+  }
+);
+exports.templatesList = async(function* () {
+    return Template.find({}, 'title _id')
+      .exec();
+  }
+);
+exports.ownersList = async(function* () {
+    return Owner.find({}, 'name _id')
+      .exec();
+  }
+);
+exports.petsList = async(function* () {
+    return Pet.find({}, 'name type _id')
+      .exec();
+  }
+);
+exports.doctorsList = async(function* () {
+    return Doctor.find({}, 'name specialization _id')
+      .exec();
+  }
+);
